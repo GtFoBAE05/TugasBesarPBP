@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class LoginPage : AppCompatActivity() {
     private lateinit var mainLayout: ConstraintLayout
@@ -19,20 +20,32 @@ class LoginPage : AppCompatActivity() {
 
     private lateinit var btnClear: Button
     private lateinit var btnLogin: Button
-    private lateinit var btnRegister: Button
-
+    private lateinit var btnToRegisterPage: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_login_page)
 
+
         mainLayout=findViewById(R.id.mainLayout)
+
         tietUsername=findViewById(R.id.tietUsernameLogin)
         tietPassword=findViewById(R.id.tietPasswordLogin)
+
         btnClear=findViewById(R.id.btnClear)
-        btnRegister=findViewById(R.id.btnRegister)
+        btnToRegisterPage=findViewById(R.id.btnToRegister)
         btnLogin=findViewById(R.id.btnLogin)
+
+
+        val lastActivity= intent.getStringExtra("from")
+
+        if(lastActivity.equals("register")){
+            val bundle: Bundle=intent.getBundleExtra("log")!!
+
+            tietUsername.setText(bundle.getString("username"))
+            tietPassword.setText(bundle.getString("password"))
+        }
 
         btnClear.setOnClickListener {
             tietUsername.setText("")
@@ -41,7 +54,7 @@ class LoginPage : AppCompatActivity() {
             Snackbar.make(mainLayout,"Text Cleared Success", Snackbar.LENGTH_LONG).show()
         }
 
-        btnRegister.setOnClickListener {
+        btnToRegisterPage.setOnClickListener {
             val intent= Intent(this, RegisterPage::class.java)
             startActivity(intent)
         }
@@ -61,15 +74,9 @@ class LoginPage : AppCompatActivity() {
                 checkLogin=false
             }
 
-//            if(username=="admin" && password=="admin") checkLogin=true
-//
-//            if(username!="admin" && password!="admin"){
-//                Snackbar.make(mainLayout,"User not found", Snackbar.LENGTH_LONG).show()
-//            }
-
             for (item in LoginInfo.listOfLogin){
-                if(item.username==username)  {
-                    if(item.password==password){
+                if(item.username.equals(username))  {
+                    if(item.password.equals(password)){
                         checkLogin=true
                         break
                     }
@@ -84,6 +91,6 @@ class LoginPage : AppCompatActivity() {
 
         }
 
-
     }
+
 }
