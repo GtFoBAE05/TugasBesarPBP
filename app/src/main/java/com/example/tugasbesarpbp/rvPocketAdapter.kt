@@ -26,12 +26,8 @@ class rvPocketAdapter(private val data:List<Pocket>): RecyclerView.Adapter<rvPoc
         return data.size
     }
 
-
-
     class viewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
         val txtPocketName:TextView= itemView.findViewById(R.id.txtPocketTitle)
         val txtPocketBalance: TextView= itemView.findViewById(R.id.txtPocketBalance)
     }
-
-
 }

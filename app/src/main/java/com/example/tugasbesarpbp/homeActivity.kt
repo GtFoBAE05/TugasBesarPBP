@@ -27,7 +27,6 @@ class homeActivity : AppCompatActivity() {
             }
             true
         }
-
     }
 
         fun changeFragment(fragment: Fragment?) {

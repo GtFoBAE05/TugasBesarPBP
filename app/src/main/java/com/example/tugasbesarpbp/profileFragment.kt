@@ -31,6 +31,4 @@ class profileFragment : Fragment() {
             }).show()
         }
     }
-
-
 }

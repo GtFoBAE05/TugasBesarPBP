@@ -15,4 +15,8 @@ class pocketFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_pocket, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
 }

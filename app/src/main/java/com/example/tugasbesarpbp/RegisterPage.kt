@@ -13,7 +13,7 @@ import java.util.*
 
 
 class RegisterPage : AppCompatActivity() {
-    private lateinit var mainLayout: ConstraintLayout
+    private lateinit var mainLayoutRegisterPage: ConstraintLayout
 
     private lateinit var tietUsername: TextInputEditText
     private lateinit var tietPassword: TextInputEditText
@@ -28,7 +28,7 @@ class RegisterPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_page)
 
-        mainLayout=findViewById(R.id.mainLayout)
+        mainLayoutRegisterPage=findViewById(R.id.mainLayoutRegisterPage)
 
         tietUsername=findViewById(R.id.tietUsernameRegister)
         tietPassword=findViewById(R.id.tietPasswordRegister)
@@ -80,7 +80,6 @@ class RegisterPage : AppCompatActivity() {
             }
 
             if(usernameRegister.isNotEmpty() && passwordRegister.isNotEmpty() && emailRegister.isNotEmpty() && dateRegister.isNotEmpty() && noTelpRegister.isNotEmpty()){
-                Snackbar.make(mainLayout,"Success register", Snackbar.LENGTH_LONG).show()
                 val intent= Intent(this@RegisterPage, LoginPage::class.java)
 
                 val bundle = Bundle()
@@ -96,6 +95,7 @@ class RegisterPage : AppCompatActivity() {
                 intent.putExtra("from","register")
 
                 intent.putExtra("log",bundle)
+
                 startActivity(intent)
             }
         }

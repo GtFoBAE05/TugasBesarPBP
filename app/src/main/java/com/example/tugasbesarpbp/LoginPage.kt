@@ -9,6 +9,7 @@ import com.example.tugasbesarpbp.entity.LoginInfo
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 
+
 class LoginPage : AppCompatActivity() {
     private lateinit var mainLayout: ConstraintLayout
 
@@ -19,11 +20,11 @@ class LoginPage : AppCompatActivity() {
     private lateinit var btnLogin: Button
     private lateinit var btnToRegisterPage: Button
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_login_page)
-
 
         mainLayout=findViewById(R.id.mainLayout)
 
@@ -34,12 +35,11 @@ class LoginPage : AppCompatActivity() {
         btnToRegisterPage=findViewById(R.id.btnToRegister)
         btnLogin=findViewById(R.id.btnLogin)
 
-
         val lastActivity= intent.getStringExtra("from")
 
         if(lastActivity.equals("register")){
+            Snackbar.make(mainLayout,"Success create account", Snackbar.LENGTH_LONG).show()
             val bundle: Bundle=intent.getBundleExtra("log")!!
-
             tietUsername.setText(bundle.getString("username"))
             tietPassword.setText(bundle.getString("password"))
         }
@@ -86,9 +86,6 @@ class LoginPage : AppCompatActivity() {
             val intent=Intent(this@LoginPage, homeActivity::class.java)
             intent.putExtra("usernameLogin",username)
             startActivity(intent)
-
         }
-
     }
-
 }
