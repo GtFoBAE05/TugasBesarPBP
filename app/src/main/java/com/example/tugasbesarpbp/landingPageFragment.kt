@@ -12,24 +12,24 @@ import com.example.tugasbesarpbp.entity.Pocket
 
 
 class landingPageFragment : Fragment() {
-    private lateinit var tvUsername:TextView
-    var myTextView: TextView? = null
+    lateinit var tvUsername:TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        tvUsername= inflater.inflate(R.layout.fragment_landing_page, container, false).findViewById(R.id.txtUserName);
-
-
-
         return inflater.inflate(R.layout.fragment_landing_page, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        tvUsername= view.findViewById(R.id.txtUserName);
+
+        val username=requireActivity().intent.getStringExtra("usernameLogin")
+
+        tvUsername.text=username
 
         val layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
         val adapter: rvPocketAdapter = rvPocketAdapter(Pocket.listOfPocket)
@@ -41,9 +41,9 @@ class landingPageFragment : Fragment() {
 
         rvPocket.adapter=adapter
 
-
-
     }
+
+
 
 
 }
