@@ -84,6 +84,7 @@ class LoginPage : AppCompatActivity() {
             if(!checkLogin) return@setOnClickListener
 
             val intent=Intent(this@LoginPage, homeActivity::class.java)
+            intent.putExtra("usernameLogin",username)
             startActivity(intent)
 
         }

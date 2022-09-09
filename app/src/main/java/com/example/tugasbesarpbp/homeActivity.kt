@@ -17,7 +17,18 @@ class homeActivity : AppCompatActivity() {
 
         botNavBar = findViewById(R.id.bottomnav)
 
+        changeFragment(landingPageFragment())
 
+        botNavBar.setOnItemSelectedListener {
+            when(it.itemId){
+                R.id.menu_home->changeFragment(landingPageFragment())
+                R.id.menu_pocket->changeFragment(pocketFragment())
+                R.id.menu_profile->changeFragment(profileFragment())
+            }
+            true
+        }
+
+    }
 
         fun changeFragment(fragment: Fragment?) {
             if (fragment != null) {
@@ -25,33 +36,4 @@ class homeActivity : AppCompatActivity() {
                     .replace(R.id.fragmentContainerView, fragment).commit()
             }
         }
-
-        fun onCreateOptionsMenu(menu: Menu): Boolean {
-            val menuInflater = MenuInflater(this)
-            menuInflater.inflate(R.menu.home_menu, menu)
-            return true
-        }
-
-        if(botNavBar.selectedItemId==R.id.menu_home){
-            changeFragment(landingPageFragment())
-        }else if(botNavBar.selectedItemId==R.id.menu_pocket){
-            changeFragment(pocketFragment())
-        }else{
-            changeFragment(profileFragment())
-        }
-
-
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//
-//        if(item.itemId == R.id.menu_home){
-//            changeFragment(landingPageFragment())
-//        }else if(item.itemId==R.id.menu_pocket){
-//            changeFragment(pocketFragment())
-//        }else{
-//            changeFragment(profileFragment())
-//        }
-//
-//        return super.onOptionsItemSelected(item)
-//    }
-    }
 }

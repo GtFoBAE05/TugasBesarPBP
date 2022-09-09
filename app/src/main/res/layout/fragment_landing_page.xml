@@ -12,22 +12,24 @@
 
         <TextView
             android:id="@+id/txtWelcome"
+            style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="33dp"
             android:layout_marginTop="12dp"
-            android:text="hi, welcome" />
+            android:text="Hi, welcome" />
 
         <TextView
             android:id="@+id/txtUserName"
+            style="@style/TextAppearance.Material3.TitleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="36dp"
             android:text="TextView" />
 
         <androidx.recyclerview.widget.RecyclerView
