@@ -18,7 +18,7 @@
         app:srcCompat="@drawable/register_pic" />
 
     <TextView
-        android:id="@+id/txtCreateAccount"
+        android:id="@+id/txtUpdateAccount"
         style="@style/TextAppearance.Material3.TitleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,11 +44,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.167"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCreateAccount"
+        app:layout_constraintTop_toBottomOf="@+id/txtUpdateAccount"
         app:layout_constraintVertical_bias="0.054" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlinedTextFieldUsernameRegister"
+        android:id="@+id/outlinedTextFieldUsernameUpdate"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/outlinedTextFieldUsernameRegister"
+        app:layout_constraintTop_toBottomOf="@+id/outlinedTextFieldUsernameUpdate"
         app:layout_constraintVertical_bias="0.0">
 
         <com.google.android.material.textfield.TextInputEditText

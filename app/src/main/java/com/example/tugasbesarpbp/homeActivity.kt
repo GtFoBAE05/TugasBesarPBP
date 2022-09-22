@@ -19,11 +19,15 @@ class homeActivity : AppCompatActivity() {
         botNavBar = findViewById(R.id.bottomnav)
         changeFragment(landingPageFragment())
 
+
+
         botNavBar.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.menu_home->changeFragment(landingPageFragment())
                 R.id.menu_pocket->changeFragment(pocketFragment())
-                R.id.menu_profile->changeFragment(profileFragment())
+                R.id.menu_profile->{
+                    changeFragment(profileFragment())
+                }
             }
             true
         }

@@ -112,18 +112,16 @@ class LoginPage : AppCompatActivity() {
                     val intent=Intent(this@LoginPage, homeActivity::class.java)
                     intent.putExtra("usernameLogin",username)
                     intent.putExtra("idLogin",resultCheckUser[0].id)
+
+                    if(resultCheckUser[0].id is Int){
+                        println("id int")
+                    }else{
+                        println("id buka int")
+                    }
+
+                    println(resultCheckUser[0].id)
                     startActivity(intent)
                 }
-
-
-
-
-
-
-
-
-
-
             }
 
             //Snackbar.make(mainLayout,"User not found", Snackbar.LENGTH_LONG).show()
