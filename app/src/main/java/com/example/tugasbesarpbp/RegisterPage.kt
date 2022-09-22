@@ -6,13 +6,21 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.tugasbesarpbp.Room.User
+import com.example.tugasbesarpbp.Room.UserDB
 import com.example.tugasbesarpbp.entity.LoginInfo
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 
 class RegisterPage : AppCompatActivity() {
+    val db by lazy { UserDB(this) }
+
+
     private lateinit var mainLayoutRegisterPage: ConstraintLayout
 
     private lateinit var tietUsername: TextInputEditText
@@ -82,19 +90,25 @@ class RegisterPage : AppCompatActivity() {
             if(usernameRegister.isNotEmpty() && passwordRegister.isNotEmpty() && emailRegister.isNotEmpty() && dateRegister.isNotEmpty() && noTelpRegister.isNotEmpty()){
                 val intent= Intent(this@RegisterPage, LoginPage::class.java)
 
-                val bundle = Bundle()
+                CoroutineScope(Dispatchers.IO).launch {
+                    db.userDao().addUser(User(0, usernameRegister, passwordRegister, emailRegister, dateRegister, noTelpRegister ))
+                    finish()
 
-                bundle.putString("username", usernameRegister)
-                bundle.putString("password", passwordRegister)
-                bundle.putString("email", emailRegister)
-                bundle.putString("date", dateRegister)
-                bundle.putString("noTelp", noTelpRegister)
+                }
 
-                LoginInfo.listOfLogin.add(LoginInfo(usernameRegister,passwordRegister,emailRegister,dateRegister,noTelpRegister))
-
+//                val bundle = Bundle()
+//
+//                bundle.putString("username", usernameRegister)
+//                bundle.putString("password", passwordRegister)
+//                bundle.putString("email", emailRegister)
+//                bundle.putString("date", dateRegister)
+//                bundle.putString("noTelp", noTelpRegister)
+//
+//                LoginInfo.listOfLogin.add(LoginInfo(usernameRegister,passwordRegister,emailRegister,dateRegister,noTelpRegister))
+//
                 intent.putExtra("from","register")
-
-                intent.putExtra("log",bundle)
+//
+//                intent.putExtra("log",bundle)
 
                 startActivity(intent)
             }
