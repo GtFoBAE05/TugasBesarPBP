@@ -1,33 +1,37 @@
 package com.example.tugasbesarpbp
 
+import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.tugasbesarpbp.Room.User
+import com.example.tugasbesarpbp.Room.UserDB
+import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [updateProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class updateProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    val db by lazy { UserDB(requireContext()) }
+
+
+    private lateinit var tietUsername: TextInputEditText
+    private lateinit var tietPassword: TextInputEditText
+    private lateinit var tietEmail: TextInputEditText
+    private lateinit var tietDate: TextInputEditText
+    private lateinit var tietNoTelp: TextInputEditText
+
+    private lateinit var btnUpdateAccount: Button
+    var picker: DatePickerDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,23 +41,82 @@ class updateProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_update_profile, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment updateProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            updateProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        tietUsername=view.findViewById(R.id.tietUsernameUpdate)
+        tietPassword=view.findViewById(R.id.tietPasswordUpdate)
+        tietEmail=view.findViewById(R.id.tietEmailUpdate)
+        tietDate=view.findViewById(R.id.tietDateUpdate)
+        tietNoTelp=view.findViewById(R.id.tietNoTelpUpdate)
+
+        btnUpdateAccount=view.findViewById(R.id.btnFromUpdatePage)
+
+        val userId= requireActivity().intent.getIntExtra("idLogin",0)
+        CoroutineScope(Dispatchers.IO).launch {
+            db.userDao().getUserById(userId)
+
+        }
+
+
+
+        tietDate.setOnClickListener {
+            val cldr: Calendar = Calendar.getInstance()
+            val day: Int = cldr.get(Calendar.DAY_OF_MONTH)
+            val month: Int = cldr.get(Calendar.MONTH)
+            val year: Int = cldr.get(Calendar.YEAR)
+            picker = DatePickerDialog(requireContext(),
+                { view, year, monthOfYear, dayOfMonth -> tietDate.setText(dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year) },
+                year,
+                month,
+                day
+            )
+            picker!!.show()
+        }
+
+        btnUpdateAccount.setOnClickListener {
+
+
+            val usernameUpdate:String= tietUsername.text.toString()
+            val passwordUpdate:String= tietPassword.text.toString()
+            val emailUpdate:String= tietEmail.text.toString()
+            val dateUpdate:String= tietDate.text.toString()
+            val noTelpUpdate:String = tietNoTelp.text.toString()
+
+            if(usernameUpdate.isEmpty()){
+                tietUsername.setError("Username must be filled with text!")
             }
+
+            if(passwordUpdate.isEmpty()){
+                tietPassword.setError("Password must be filled with text!")
+            }
+
+            if(emailUpdate.isEmpty()){
+                tietEmail.setError("Email must be filled with text!")
+            }
+
+            if(dateUpdate.isEmpty()){
+                tietDate.setError("Date must be selected!")
+            }
+
+            if(noTelpUpdate.isEmpty()){
+                tietNoTelp.setError("Phone Number must be filled with text!")
+            }
+
+            val userId= requireActivity().intent.getIntExtra("idLogin",0)
+
+            if(usernameUpdate.isNotEmpty() && passwordUpdate.isNotEmpty() && emailUpdate.isNotEmpty() && dateUpdate.isNotEmpty() && noTelpUpdate.isNotEmpty()){
+                CoroutineScope(Dispatchers.IO).launch {
+                    db.userDao().updateUser(User(userId,usernameUpdate, passwordUpdate, emailUpdate, dateUpdate, noTelpUpdate))
+
+
+                }
+                requireActivity().intent.putExtra("usernameLogin",usernameUpdate)
+                requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView,profileFragment()).commit()
+            }
+        }
+
     }
+
+
 }

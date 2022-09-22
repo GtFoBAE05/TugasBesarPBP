@@ -2,13 +2,27 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/updateAccountFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".updateProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/updateAccountConstraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/update_pic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.796"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.048" />
 
         <TextView
             android:id="@+id/txtUpdateAccount"
@@ -25,7 +39,7 @@
             app:layout_constraintHorizontal_bias="0.16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.18" />
+            app:layout_constraintVertical_bias="0.13" />
 
         <TextView
             android:id="@+id/txtAccountInformation"
@@ -82,9 +96,9 @@
                 android:id="@+id/tietPasswordUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingEnd="40dp"
                 android:drawableStart="@drawable/ic_baseline_lock_24"
-                android:hint="Password" />
+                android:hint="Password"
+                android:paddingEnd="40dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -128,10 +142,10 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tietDateUpdate"
-                android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_baseline_date_range_24"
+                android:focusable="false"
                 android:hint="Tanggal lahir" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -174,5 +188,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/outlinedTextFieldNoTelpUpdate"
             app:layout_constraintVertical_bias="0.213" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

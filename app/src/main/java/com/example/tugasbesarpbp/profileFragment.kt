@@ -22,6 +22,7 @@ class profileFragment : Fragment() {
     val db by lazy { UserDB(requireContext()) }
 
     lateinit var btnLogout:Button
+    lateinit var btnUpdate:Button
     lateinit var tvUsername:TextView
     lateinit var tvEmail:TextView
     lateinit var tvDate:TextView
@@ -47,8 +48,9 @@ class profileFragment : Fragment() {
         tvDate=view.findViewById(R.id.txtDateProfile)
         tvPhone=view.findViewById(R.id.txtPhoneNumber)
 
+        val userId= requireActivity().intent.getIntExtra("idLogin",0)
         CoroutineScope(Dispatchers.IO).launch{
-            val userId= requireActivity().intent.getIntExtra("idLogin",0)
+
             println("user id=" + userId)
             val resultCheckUser: List<User> = db.userDao().getUserById(userId)
             println("hasil=" + resultCheckUser)
@@ -60,7 +62,12 @@ class profileFragment : Fragment() {
         }
 
 
+        btnUpdate=view.findViewById(R.id.btnUpdateProfile)
+        btnUpdate.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, updateProfileFragment()).commit()
 
+
+        }
 
 
         btnLogout=view.findViewById(R.id.btnLogoutInProfilePage)
