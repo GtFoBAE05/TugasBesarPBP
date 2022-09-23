@@ -7,9 +7,10 @@ import android.widget.TextView
 import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tugasbesarpbp.entity.Pocket
+import com.example.tugasbesarpbp.pocketRoom.pocket
 import org.w3c.dom.Text
 
-class rvPocketAdapter(private val data:List<Pocket>): RecyclerView.Adapter<rvPocketAdapter.viewHolder>() {
+class rvPocketAdapter(private val data:List<pocket>): RecyclerView.Adapter<rvPocketAdapter.viewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
         val itemView= LayoutInflater.from(parent.context).inflate(R.layout.rv_pocket, parent, false)

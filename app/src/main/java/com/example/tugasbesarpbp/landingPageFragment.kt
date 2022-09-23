@@ -8,10 +8,17 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tugasbesarpbp.Room.UserDB
 import com.example.tugasbesarpbp.entity.Pocket
+import com.example.tugasbesarpbp.pocketRoom.PocketDB
+import com.example.tugasbesarpbp.pocketRoom.pocket
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class landingPageFragment : Fragment() {
+    val db by lazy { PocketDB(requireContext()) }
     lateinit var tvUsername:TextView
 
     override fun onCreateView(
@@ -31,15 +38,26 @@ class landingPageFragment : Fragment() {
 
         tvUsername.text=username
 
-        val layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-        val adapter: rvPocketAdapter = rvPocketAdapter(Pocket.listOfPocket)
-        val rvPocket: RecyclerView= view.findViewById(R.id.rv_pocket)
 
-        rvPocket.layoutManager=layoutManager
 
-        rvPocket.setHasFixedSize(true)
 
-        rvPocket.adapter=adapter
+        CoroutineScope(Dispatchers.IO).launch {
+            val idUser= requireActivity().intent.getIntExtra("idLogin",0)
+
+            val result= db.pocketDao().getPocket(idUser)
+            val adapter: rvPocketAdapter = rvPocketAdapter(result)
+            val layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+            val rvPocket: RecyclerView= view.findViewById(R.id.rv_pocket)
+
+            rvPocket.layoutManager=layoutManager
+
+            rvPocket.setHasFixedSize(true)
+
+            rvPocket.adapter=adapter
+        }
+
+
+
 
     }
 

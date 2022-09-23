@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
 import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -30,8 +32,11 @@ class updateProfileFragment : Fragment() {
     private lateinit var tietDate: TextInputEditText
     private lateinit var tietNoTelp: TextInputEditText
 
+    private lateinit var otUsernameUpdade: TextInputLayout
+
     private lateinit var btnUpdateAccount: Button
     var picker: DatePickerDialog? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,15 +55,22 @@ class updateProfileFragment : Fragment() {
         tietDate=view.findViewById(R.id.tietDateUpdate)
         tietNoTelp=view.findViewById(R.id.tietNoTelpUpdate)
 
+        otUsernameUpdade=view.findViewById(R.id.outlinedTextFieldUsernameUpdate)
+
         btnUpdateAccount=view.findViewById(R.id.btnFromUpdatePage)
 
         val userId= requireActivity().intent.getIntExtra("idLogin",0)
-        CoroutineScope(Dispatchers.IO).launch {
-            db.userDao().getUserById(userId)
+//        CoroutineScope(Dispatchers.IO).launch {
+//            var result= db.userDao().getUserById(userId)
+//            println(result)
+//            tietUsername.setText(result[0].username)
+//
+//        }
 
-        }
 
-
+//        tietPassword.setText((result[0].password))
+//        tietEmail.setText(result[0].email)
+//        tietNoTelp.setText(result[0].NoTelp)
 
         tietDate.setOnClickListener {
             val cldr: Calendar = Calendar.getInstance()
