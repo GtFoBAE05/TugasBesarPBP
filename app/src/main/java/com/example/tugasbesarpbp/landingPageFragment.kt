@@ -1,5 +1,6 @@
 package com.example.tugasbesarpbp
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,14 +39,15 @@ class landingPageFragment : Fragment() {
 
         tvUsername.text=username
 
-
-
-
         CoroutineScope(Dispatchers.IO).launch {
             val idUser= requireActivity().intent.getIntExtra("idLogin",0)
 
             val result= db.pocketDao().getPocket(idUser)
-            val adapter: rvPocketAdapter = rvPocketAdapter(result)
+            val adapter: rvPocketAdapter = rvPocketAdapter(result,object : rvPocketAdapter.OnAdapterListener{
+                override fun onClick(pocket: pocket) {
+                    requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, pocketDetailFragment())
+                }
+            })
             val layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
             val rvPocket: RecyclerView= view.findViewById(R.id.rv_pocket)
 
@@ -55,12 +57,7 @@ class landingPageFragment : Fragment() {
 
             rvPocket.adapter=adapter
         }
-
-
-
-
     }
-
 
 
 

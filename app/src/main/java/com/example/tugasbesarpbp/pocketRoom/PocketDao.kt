@@ -16,4 +16,7 @@ interface PocketDao {
     @Query("SELECT * FROM pocket WHERE userId= :x")
     suspend fun getPocket(x:Int): List<pocket>
 
+    @Query("SELECT * FROM pocket where id= :pocketId")
+    suspend fun getPocketById(pocketId:Int): List<pocket>
+
 }

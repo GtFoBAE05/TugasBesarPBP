@@ -12,14 +12,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class homeActivity : AppCompatActivity() {
     private lateinit var botNavBar: BottomNavigationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         botNavBar = findViewById(R.id.bottomnav)
         changeFragment(landingPageFragment())
-
-
 
         botNavBar.setOnItemSelectedListener {
             when(it.itemId){

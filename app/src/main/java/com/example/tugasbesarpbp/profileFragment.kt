@@ -35,13 +35,11 @@ class profileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         tvUsername=view.findViewById(R.id.txtUsernameProfile)
         tvEmail=view.findViewById(R.id.txtEmailProfile)
@@ -65,7 +63,6 @@ class profileFragment : Fragment() {
         btnUpdate=view.findViewById(R.id.btnUpdateProfile)
         btnUpdate.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, updateProfileFragment()).commit()
-
 
         }
 
