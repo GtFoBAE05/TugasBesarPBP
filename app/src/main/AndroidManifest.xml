@@ -14,7 +14,7 @@
         android:theme="@style/Theme.TugasBesarPBP"
         tools:targetApi="31">
         <activity
-            android:name=".addPocketPage"
+            android:name=".LoginPage"
             android:exported="false" />
         <activity
             android:name=".homeActivity"
@@ -23,7 +23,7 @@
             android:name=".RegisterPage"
             android:exported="false" />
         <activity
-            android:name=".LoginPage"
+            android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

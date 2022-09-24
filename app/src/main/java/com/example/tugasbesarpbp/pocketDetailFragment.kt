@@ -58,6 +58,7 @@ class pocketDetailFragment : Fragment() {
 
             println("test:" + name +"  "+ balance)
 
+
         }
 
 
