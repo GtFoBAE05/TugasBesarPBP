@@ -1,6 +1,8 @@
 package com.example.tugasbesarpbp
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +30,11 @@ class LoginPage : AppCompatActivity() {
     private lateinit var btnLogin: Button
     private lateinit var btnToRegisterPage: Button
 
+    private val myPreference="myPref"
+    var sharedPreferences: SharedPreferences?=null
+
+    private val namePref="nameKey"
+    private val passPref="passKey"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +51,18 @@ class LoginPage : AppCompatActivity() {
         btnToRegisterPage=findViewById(R.id.btnToRegister)
         btnLogin=findViewById(R.id.btnLogin)
 
-        val lastActivity= intent.getStringExtra("from")
+
+        sharedPreferences= getSharedPreferences(myPreference, Context.MODE_PRIVATE)
+
+        if (sharedPreferences!!.contains(namePref)) {
+            tietUsername?.setText(sharedPreferences!!.getString(namePref, ""))
+        }
+        if (sharedPreferences!!.contains(passPref)) {
+            tietPassword?.setText(sharedPreferences!!.getString(passPref, ""))
+        }
+
+
+//        val lastActivity= intent.getStringExtra("from")
 
 //        if(lastActivity.equals("register")){
 ////            Snackbar.make(mainLayout,"Success create account", Snackbar.LENGTH_LONG).show()
@@ -120,6 +138,13 @@ class LoginPage : AppCompatActivity() {
                     }
 
                     println(resultCheckUser[0].id)
+
+                    //save to sharedPreference
+                    val editor: SharedPreferences.Editor= sharedPreferences!!.edit()
+                    editor.putString(namePref,username)
+                    editor.putString(passPref,password)
+                    editor.apply()
+
                     startActivity(intent)
                 }
             }
