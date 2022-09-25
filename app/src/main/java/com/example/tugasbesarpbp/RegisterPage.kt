@@ -8,8 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
-import com.example.tugasbesarpbp.entity.LoginInfo
-import com.google.android.material.snackbar.Snackbar
+import com.example.tugasbesarpbp.databinding.ActivityHomeBinding.inflate
+import com.example.tugasbesarpbp.databinding.ActivityRegisterPageBinding
+import com.example.tugasbesarpbp.databinding.FragmentProfileBinding.inflate
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +21,7 @@ import java.util.*
 class RegisterPage : AppCompatActivity() {
     val db by lazy { UserDB(this) }
 
-
+    lateinit var binding: ActivityRegisterPageBinding
     private lateinit var mainLayoutRegisterPage: ConstraintLayout
 
     private lateinit var tietUsername: TextInputEditText
@@ -34,17 +35,22 @@ class RegisterPage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register_page)
 
-        mainLayoutRegisterPage=findViewById(R.id.mainLayoutRegisterPage)
+        binding= ActivityRegisterPageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tietUsername=findViewById(R.id.tietUsernameRegister)
-        tietPassword=findViewById(R.id.tietPasswordRegister)
-        tietEmail=findViewById(R.id.tietEmailRegister)
-        tietDate=findViewById(R.id.tietDateRegister)
-        tietNoTelp=findViewById(R.id.tietNoTelpRegister)
 
-        btnRegister=findViewById(R.id.btnFromRegisterPage)
+        //setContentView(R.layout.activity_register_page)
+
+        mainLayoutRegisterPage=binding.mainLayoutRegisterPage
+
+        tietUsername=binding.tietUsernameRegister
+        tietPassword=binding.tietPasswordRegister
+        tietEmail=binding.tietEmailRegister
+        tietDate=binding.tietDateRegister
+        tietNoTelp=binding.tietNoTelpRegister
+
+        btnRegister=binding.btnFromRegisterPage
 
         tietDate.setOnClickListener {
             val cldr: Calendar = Calendar.getInstance()

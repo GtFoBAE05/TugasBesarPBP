@@ -54,13 +54,10 @@ class pocketDetailFragment : Fragment() {
             name=result[0].pocketName.toString()
             balance=result[0].pocketBalance.toString()
 
-
-
             println("test:" + name +"  "+ balance)
 
 
         }
-
 
 
         btnUpdate=view.findViewById(R.id.buttonUpdatePocketDetailPage)
