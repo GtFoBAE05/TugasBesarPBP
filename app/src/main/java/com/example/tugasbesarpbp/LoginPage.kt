@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.databinding.DataBindingUtil
 import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
+import com.example.tugasbesarpbp.databinding.ActivityLoginPageBinding
 import com.example.tugasbesarpbp.entity.LoginInfo
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -37,20 +39,23 @@ class LoginPage : AppCompatActivity() {
     private val passPref="passKey"
 
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
-        setContentView(R.layout.activity_login_page)
+        //setContentView(R.layout.activity_login_page)
 
-        mainLayout=findViewById(R.id.mainLayout)
+        val binding: ActivityLoginPageBinding= DataBindingUtil.setContentView(this, R.layout.activity_login_page)
 
-        tietUsername=findViewById(R.id.tietUsernameLogin)
-        tietPassword=findViewById(R.id.tietPasswordLogin)
+        mainLayout=binding.mainLayout
 
-        btnClear=findViewById(R.id.btnClear)
-        btnToRegisterPage=findViewById(R.id.btnToRegister)
-        btnLogin=findViewById(R.id.btnLogin)
+        tietUsername=binding.tietUsernameLogin
+        tietPassword=binding.tietPasswordLogin
 
+        btnClear=binding.btnClear
+        btnToRegisterPage=binding.btnToRegister
+        btnLogin=binding.btnLogin
 
         sharedPreferences= getSharedPreferences(myPreference, Context.MODE_PRIVATE)
 
@@ -60,6 +65,34 @@ class LoginPage : AppCompatActivity() {
         if (sharedPreferences!!.contains(passPref)) {
             tietPassword?.setText(sharedPreferences!!.getString(passPref, ""))
         }
+
+
+
+        var fillBtnMsg=intent.getStringExtra("btnFillClicked")
+        println("fill Btn msg= "+fillBtnMsg)
+
+        if(fillBtnMsg.equals("true")){
+
+            CoroutineScope(Dispatchers.IO).launch {
+                var getLastUser: List<User> = db.userDao().getUsers()
+
+                println("username - pass" + getLastUser.last().username  + " - "+ getLastUser.last().password)
+
+
+                runOnUiThread(){
+                    tietUsername.setText("")
+                    tietPassword.setText("")
+
+                    tietUsername.setText(getLastUser.last().username)
+                    tietPassword.setText(getLastUser.last().password)
+
+                    Snackbar.make(mainLayout,"success fill login form", Snackbar.LENGTH_LONG).show()
+                }
+
+
+            }
+        }
+
 
 
 //        val lastActivity= intent.getStringExtra("from")

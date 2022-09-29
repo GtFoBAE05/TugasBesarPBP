@@ -5,6 +5,7 @@ plugins {
 }
 
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdk 32
@@ -34,6 +35,10 @@ android {
     }
     
     viewBinding{
+        enabled=true
+    }
+
+    dataBinding{
         enabled=true
     }
 

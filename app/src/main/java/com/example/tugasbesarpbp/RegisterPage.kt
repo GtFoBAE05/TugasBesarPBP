@@ -1,16 +1,22 @@
 package com.example.tugasbesarpbp
 
-import android.app.DatePickerDialog
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import com.example.tugasbesarpbp.R.drawable
 import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
-import com.example.tugasbesarpbp.databinding.ActivityHomeBinding.inflate
 import com.example.tugasbesarpbp.databinding.ActivityRegisterPageBinding
-import com.example.tugasbesarpbp.databinding.FragmentProfileBinding.inflate
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +38,9 @@ class RegisterPage : AppCompatActivity() {
 
     private lateinit var btnRegister: Button
     var picker: DatePickerDialog? = null
+
+    private val CHANNEL="channel_notification"
+    private val notification=100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,22 +111,71 @@ class RegisterPage : AppCompatActivity() {
 
                 }
 
+                createNotificationChannel()
+                sendNotification()
+
+                intent.putExtra("from","register")
+
+
+                startActivity(intent)
+
 //                val bundle = Bundle()
 //
 //                bundle.putString("username", usernameRegister)
-//                bundle.putString("password", passwordRegister)
+//                bundle.putString("passw+ord", passwordRegister)
 //                bundle.putString("email", emailRegister)
 //                bundle.putString("date", dateRegister)
 //                bundle.putString("noTelp", noTelpRegister)
 //
 //                LoginInfo.listOfLogin.add(LoginInfo(usernameRegister,passwordRegister,emailRegister,dateRegister,noTelpRegister))
 //
-                intent.putExtra("from","register")
 //
 //                intent.putExtra("log",bundle)
 
-                startActivity(intent)
             }
         }
     }
+
+    private fun createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name="Notification Title"
+            val descriptionText="Notification Description"
+
+            val channel=NotificationChannel(CHANNEL,name,NotificationManager.IMPORTANCE_DEFAULT).apply {
+                description=descriptionText
+            }
+
+            val notificationManager: NotificationManager=
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun sendNotification(){
+        val bpStyle= NotificationCompat.BigPictureStyle();
+        bpStyle.bigPicture(BitmapFactory.decodeResource(resources, R.drawable.success_register))
+
+        val resultIntent:Intent = Intent(this, LoginPage::class.java)
+
+        resultIntent.putExtra("btnFillClicked", "true")
+
+        val pendingIntent= PendingIntent.getActivity(this,0,resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val builder = NotificationCompat.Builder(this,CHANNEL)
+            .setSmallIcon(R.drawable.ic_baseline_how_to_reg_24)
+            .setContentTitle("SUCCESS REGISTER")
+            .setContentText("Tekan Fill pada notification untuk auto-fill login page")
+            .setStyle(bpStyle)
+            .setColor(Color.RED)
+
+            .addAction(R.drawable.ic_baseline_login_24,"fill", pendingIntent)
+
+
+        with(NotificationManagerCompat.from(this)){
+            notify(notification,builder.build())
+        }
+
+    }
+
+
 }
