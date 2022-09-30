@@ -7,17 +7,22 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
+import com.example.tugasbesarpbp.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class homeActivity : AppCompatActivity() {
     private lateinit var botNavBar: BottomNavigationView
 
+    lateinit var binding: ActivityHomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding= ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        botNavBar = findViewById(R.id.bottomnav)
+        botNavBar = binding.bottomnav
         changeFragment(landingPageFragment())
 
         botNavBar.setOnItemSelectedListener {

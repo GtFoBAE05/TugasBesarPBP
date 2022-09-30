@@ -13,6 +13,7 @@ import com.example.tugasbesarpbp.databinding.ActivityHomeBinding
 import android.content.Intent
 import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
+import com.example.tugasbesarpbp.databinding.FragmentProfileBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,27 +29,29 @@ class profileFragment : Fragment() {
     lateinit var tvDate:TextView
     lateinit var tvPhone:TextView
 
-    var binding: ActivityHomeBinding? = null
+    lateinit var binding: FragmentProfileBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        binding= FragmentProfileBinding.inflate(inflater,container, false)
+        val view = binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tvUsername=view.findViewById(R.id.txtUsernameProfile)
-        tvEmail=view.findViewById(R.id.txtEmailProfile)
-        tvDate=view.findViewById(R.id.txtDateProfile)
-        tvPhone=view.findViewById(R.id.txtPhoneNumber)
+        tvUsername=binding.txtUsernameProfile
+        tvEmail=binding.txtEmailProfile
+        tvDate=binding.txtDateProfile
+        tvPhone=binding.txtPhoneNumber
 
         val userId= requireActivity().intent.getIntExtra("idLogin",0)
-        CoroutineScope(Dispatchers.IO).launch{
 
+        CoroutineScope(Dispatchers.IO).launch{
             println("user id=" + userId)
             val resultCheckUser: List<User> = db.userDao().getUserById(userId)
             println("hasil=" + resultCheckUser)
@@ -56,18 +59,15 @@ class profileFragment : Fragment() {
             tvEmail.setText("Email:" +resultCheckUser[0].email)
             tvDate.setText("Birth:" +resultCheckUser[0].date)
             tvPhone.setText("Phone number:" +resultCheckUser[0].NoTelp)
-
         }
 
 
-        btnUpdate=view.findViewById(R.id.btnUpdateProfile)
+        btnUpdate=binding.btnUpdateProfile
         btnUpdate.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, updateProfileFragment()).commit()
-
         }
 
-
-        btnLogout=view.findViewById(R.id.btnLogoutInProfilePage)
+        btnLogout=binding.btnLogoutInProfilePage
         btnLogout.setOnClickListener {
             val alertDialogBuilder = AlertDialog.Builder(requireContext())
             alertDialogBuilder.setMessage("Are you sure want to exit?").setPositiveButton("YES", object : DialogInterface.OnClickListener{

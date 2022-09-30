@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tugasbesarpbp.Room.UserDB
+import com.example.tugasbesarpbp.databinding.FragmentLandingPageBinding
 import com.example.tugasbesarpbp.entity.Pocket
 import com.example.tugasbesarpbp.pocketRoom.PocketDB
 import com.example.tugasbesarpbp.pocketRoom.pocket
@@ -20,20 +21,25 @@ import kotlinx.coroutines.launch
 
 class landingPageFragment : Fragment() {
     val db by lazy { PocketDB(requireContext()) }
+
     lateinit var tvUsername:TextView
+
+    lateinit var binding: FragmentLandingPageBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_landing_page, container, false)
+        binding= FragmentLandingPageBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tvUsername= view.findViewById(R.id.txtUserName);
+        tvUsername= binding.txtUserName
 
         val username=requireActivity().intent.getStringExtra("usernameLogin")
 

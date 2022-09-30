@@ -28,6 +28,7 @@ class RegisterPage : AppCompatActivity() {
     val db by lazy { UserDB(this) }
 
     lateinit var binding: ActivityRegisterPageBinding
+
     private lateinit var mainLayoutRegisterPage: ConstraintLayout
 
     private lateinit var tietUsername: TextInputEditText
@@ -47,9 +48,6 @@ class RegisterPage : AppCompatActivity() {
 
         binding= ActivityRegisterPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-        //setContentView(R.layout.activity_register_page)
 
         mainLayoutRegisterPage=binding.mainLayoutRegisterPage
 
@@ -116,7 +114,6 @@ class RegisterPage : AppCompatActivity() {
 
                 intent.putExtra("from","register")
 
-
                 startActivity(intent)
 
 //                val bundle = Bundle()
@@ -176,6 +173,5 @@ class RegisterPage : AppCompatActivity() {
         }
 
     }
-
 
 }

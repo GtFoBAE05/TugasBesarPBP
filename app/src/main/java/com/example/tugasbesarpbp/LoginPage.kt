@@ -38,9 +38,6 @@ class LoginPage : AppCompatActivity() {
     private val namePref="nameKey"
     private val passPref="passKey"
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
@@ -189,9 +186,5 @@ class LoginPage : AppCompatActivity() {
 //            intent.putExtra("usernameLogin",username)
 //            startActivity(intent)
         }
-
-
     }
-
-
 }

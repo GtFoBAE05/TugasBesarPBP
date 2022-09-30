@@ -21,12 +21,10 @@ class pocketDetailFragment : Fragment() {
 
     val db by lazy { PocketDB(requireContext()) }
 
-    private var binding: FragmentPocketDetailBinding? =null
+    lateinit var binding: FragmentPocketDetailBinding
 
     private lateinit var etPocketName:EditText
     private lateinit var etPocketBalance:EditText
-
-
 
     private lateinit var btnUpdate:Button
     private lateinit var btnDelete:Button
@@ -37,16 +35,15 @@ class pocketDetailFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding= FragmentPocketDetailBinding.inflate(inflater,container,false)
-        val view= binding!!.root
+        val view= binding.root
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        etPocketName=binding!!.editPocketName
-        etPocketBalance=binding!!.editPocketBalance
+        etPocketName=binding.editPocketName
+        etPocketBalance=binding.editPocketBalance
 
         var name:String
         var balance:String
@@ -67,20 +64,12 @@ class pocketDetailFragment : Fragment() {
                 etPocketBalance.setText(balance)
             }
 
-
-
-
         }
 
-
-
-        btnUpdate=binding!!.buttonUpdatePocketDetailPage
+        btnUpdate=binding.buttonUpdatePocketDetailPage
         btnUpdate.setOnClickListener {
 
-            //fix name&balance
-
             CoroutineScope(Dispatchers.IO).launch {
-
                 var pocketId= requireActivity().intent.getIntExtra("pocketId",0)
                 var result=db.pocketDao().getPocketById(pocketId)
 
@@ -95,7 +84,7 @@ class pocketDetailFragment : Fragment() {
 
         }
 
-        btnDelete=binding!!.buttonDeletePocketDetailPage
+        btnDelete=binding.buttonDeletePocketDetailPage
         btnDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch() {
                 var result=db.pocketDao().getPocketById(pocketId)

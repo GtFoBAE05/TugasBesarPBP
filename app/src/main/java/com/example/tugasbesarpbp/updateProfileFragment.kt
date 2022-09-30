@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
+import com.example.tugasbesarpbp.databinding.FragmentUpdateProfileBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +26,7 @@ class updateProfileFragment : Fragment() {
 
     val db by lazy { UserDB(requireContext()) }
 
+    lateinit var binding: FragmentUpdateProfileBinding
 
     private lateinit var tietUsername: TextInputEditText
     private lateinit var tietPassword: TextInputEditText
@@ -32,45 +34,43 @@ class updateProfileFragment : Fragment() {
     private lateinit var tietDate: TextInputEditText
     private lateinit var tietNoTelp: TextInputEditText
 
-    private lateinit var otUsernameUpdade: TextInputLayout
-
     private lateinit var btnUpdateAccount: Button
     var picker: DatePickerDialog? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_update_profile, container, false)
+        binding= FragmentUpdateProfileBinding.inflate(inflater, container, false)
+        val view= binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tietUsername=view.findViewById(R.id.tietUsernameUpdate)
-        tietPassword=view.findViewById(R.id.tietPasswordUpdate)
-        tietEmail=view.findViewById(R.id.tietEmailUpdate)
-        tietDate=view.findViewById(R.id.tietDateUpdate)
-        tietNoTelp=view.findViewById(R.id.tietNoTelpUpdate)
+        tietUsername=binding.tietUsernameUpdate
+        tietPassword=binding.tietPasswordUpdate
+        tietEmail=binding.tietEmailUpdate
+        tietDate=binding.tietDateUpdate
+        tietNoTelp=binding.tietNoTelpUpdate
 
-        otUsernameUpdade=view.findViewById(R.id.outlinedTextFieldUsernameUpdate)
+        btnUpdateAccount=binding.btnFromUpdatePage
 
-        btnUpdateAccount=view.findViewById(R.id.btnFromUpdatePage)
+        CoroutineScope(Dispatchers.IO).launch {
+            val userId= requireActivity().intent.getIntExtra("idLogin",0)
+            var result= db.userDao().getUserById(userId)
+            println(result)
 
-        val userId= requireActivity().intent.getIntExtra("idLogin",0)
-//        CoroutineScope(Dispatchers.IO).launch {
-//            var result= db.userDao().getUserById(userId)
-//            println(result)
-//            tietUsername.setText(result[0].username)
-//
-//        }
-
-
-//        tietPassword.setText((result[0].password))
-//        tietEmail.setText(result[0].email)
-//        tietNoTelp.setText(result[0].NoTelp)
+            requireActivity().runOnUiThread(){
+                tietUsername.setText(result[0].username)
+                tietPassword.setText((result[0].password))
+                tietDate.setText(result[0].date)
+                tietEmail.setText(result[0].email)
+                tietNoTelp.setText(result[0].NoTelp)
+            }
+        }
 
         tietDate.setOnClickListener {
             val cldr: Calendar = Calendar.getInstance()
@@ -87,8 +87,6 @@ class updateProfileFragment : Fragment() {
         }
 
         btnUpdateAccount.setOnClickListener {
-
-
             val usernameUpdate:String= tietUsername.text.toString()
             val passwordUpdate:String= tietPassword.text.toString()
             val emailUpdate:String= tietEmail.text.toString()
@@ -118,11 +116,11 @@ class updateProfileFragment : Fragment() {
             val userId= requireActivity().intent.getIntExtra("idLogin",0)
 
             if(usernameUpdate.isNotEmpty() && passwordUpdate.isNotEmpty() && emailUpdate.isNotEmpty() && dateUpdate.isNotEmpty() && noTelpUpdate.isNotEmpty()){
+
                 CoroutineScope(Dispatchers.IO).launch {
                     db.userDao().updateUser(User(userId,usernameUpdate, passwordUpdate, emailUpdate, dateUpdate, noTelpUpdate))
-
-
                 }
+
                 requireActivity().intent.putExtra("usernameLogin",usernameUpdate)
                 requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView,profileFragment()).commit()
             }
