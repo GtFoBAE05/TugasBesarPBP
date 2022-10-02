@@ -1,8 +1,11 @@
 package com.example.tugasbesarpbp
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -38,12 +41,17 @@ class LoginPage : AppCompatActivity() {
     private val namePref="nameKey"
     private val passPref="passKey"
 
+    private val CHANNEL_ID_1 = "channel_notification01"
+    private val notificationId1 = 101
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         //setContentView(R.layout.activity_login_page)
 
         val binding: ActivityLoginPageBinding= DataBindingUtil.setContentView(this, R.layout.activity_login_page)
+
+        createNotificationChannel()
 
         mainLayout=binding.mainLayout
 
@@ -187,4 +195,21 @@ class LoginPage : AppCompatActivity() {
 //            startActivity(intent)
         }
     }
+
+    private fun createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name = "Notification Title"
+            val descriptionText = "Notification Description"
+
+            val channel1= NotificationChannel(CHANNEL_ID_1,name, NotificationManager.IMPORTANCE_DEFAULT).apply {
+                description=descriptionText
+            }
+
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel1)
+        }
+    }
+
+
 }

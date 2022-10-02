@@ -1,4 +1,4 @@
-package com.example.tugasbesarpbp
+package com.example.tugasbesarpbp.notif
 
 import android.content.BroadcastReceiver
 import android.content.Context
