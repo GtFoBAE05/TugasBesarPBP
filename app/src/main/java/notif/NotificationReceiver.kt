@@ -12,8 +12,5 @@ class NotificationReceiver : BroadcastReceiver() {
         val message = intent!!.getStringExtra("toastMessage")
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 
-        val builder .setStyle(
-        NotificationCompat.BigPictureStyle()
-            .bigPicture(BitmapFactory.decodeResource(getResources(), R.drawable.uang_depo)))
     }
 }
