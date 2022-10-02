@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.193" />
 
-        <EditText
+        <com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
             android:id="@+id/editPocketBalance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -33,6 +33,7 @@
             android:layout_marginEnd="32dp"
             android:gravity="top"
             android:hint="Pocket Balance"
+            app:prefix="$"
             android:inputType="number"
             android:minHeight="48dp"
             android:minLines="1"
