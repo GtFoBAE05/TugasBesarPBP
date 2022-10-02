@@ -19,7 +19,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="33dp"
             android:layout_marginTop="12dp"
-            android:text="Hi, welcome" />
+            android:text="Hi, welcome👋" />
 
         <TextView
             android:id="@+id/txtUserName"
