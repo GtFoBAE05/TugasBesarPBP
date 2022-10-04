@@ -16,8 +16,8 @@
         android:layout_width="match_parent"
 
         android:layout_height="match_parent"
+        android:background="@drawable/white"
         tools:context=".LoginPage">
-
 
 
         <TextView
@@ -97,8 +97,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_baseline_lock_24"
-                android:paddingEnd="40dp"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:paddingEnd="40dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

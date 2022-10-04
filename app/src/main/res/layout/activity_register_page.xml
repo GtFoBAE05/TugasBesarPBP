@@ -5,6 +5,7 @@
     android:id="@+id/mainLayoutRegisterPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/white"
     tools:context=".RegisterPage">
 
     <ImageView
@@ -89,9 +90,9 @@
             android:id="@+id/tietPasswordRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingEnd="40dp"
             android:drawableStart="@drawable/ic_baseline_lock_24"
-            android:hint="Password" />
+            android:hint="Password"
+            android:paddingEnd="40dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -135,10 +136,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tietDateRegister"
-            android:focusable="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_baseline_date_range_24"
+            android:focusable="false"
             android:hint="Tanggal lahir" />
 
     </com.google.android.material.textfield.TextInputLayout>
