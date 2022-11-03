@@ -1,0 +1,25 @@
+{
+  "results": [
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.779433,
+          "lng": 110.415782
+        }
+      },
+      "name": "Kampus 3 Universitas Atma Jaya Yogyakarta",
+      "vicinity": "Jl. Babarsari No.43, Janti, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.7824078305081645,
+          "lng": 110.4200539544587
+        }
+      },
+      "name": "Kantor cabang Solo KM. 8",
+      "vicinity": "Jl. Raya Solo KM. 8 No. 234, Kalongan, Maguwoharjo, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55282"
+    }
+  ],
+  "status": "OK"
+}
