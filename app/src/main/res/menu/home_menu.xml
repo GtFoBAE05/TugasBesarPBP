@@ -15,4 +15,10 @@
         android:enabled="true"
         android:icon="@drawable/ic_baseline_face_24"
         android:title="Profile" />
+
+    <item
+        android:id="@+id/menu_map"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_location_on_24"
+        android:title="Profile" />
 </menu>

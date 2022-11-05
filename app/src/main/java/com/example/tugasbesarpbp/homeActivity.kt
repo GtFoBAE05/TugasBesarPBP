@@ -1,13 +1,8 @@
 package com.example.tugasbesarpbp
 
-import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.widget.TextView
-import androidx.databinding.DataBindingUtil.setContentView
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.tugasbesarpbp.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -32,6 +27,7 @@ class homeActivity : AppCompatActivity() {
                 R.id.menu_profile->{
                     changeFragment(profileFragment())
                 }
+                R.id.menu_map->changeFragment(mapFragment())
             }
             true
         }
