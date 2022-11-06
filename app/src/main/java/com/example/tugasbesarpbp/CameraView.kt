@@ -1,4 +1,5 @@
-package com.example.e_learning.Activity
+package com.example.tugasbesarpbp
+
 
 import android.content.Context
 import android.hardware.Camera
