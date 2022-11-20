@@ -25,6 +25,7 @@
         <activity
             android:name=".RegisterPage"
             android:exported="false" />
+
         <activity
             android:name=".SplashScreen"
             android:exported="true">
