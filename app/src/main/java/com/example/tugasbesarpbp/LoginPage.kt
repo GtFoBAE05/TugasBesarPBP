@@ -11,20 +11,33 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import com.android.volley.AuthFailureError
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.example.tugasbesarpbp.Room.Constant
 import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
+import com.example.tugasbesarpbp.api.UsersApi
 import com.example.tugasbesarpbp.databinding.ActivityLoginPageBinding
 import com.example.tugasbesarpbp.entity.LoginInfo
+import com.example.tugasbesarpbp.models.Users
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.nio.charset.StandardCharsets
 
 
 class LoginPage : AppCompatActivity() {
     val db by lazy { UserDB(this) }
+
+    private var queue: RequestQueue? = null
 
     private lateinit var mainLayout: ConstraintLayout
 
@@ -44,6 +57,19 @@ class LoginPage : AppCompatActivity() {
     private val CHANNEL_ID_1 = "channel_notification01"
     private val notificationId1 = 101
 
+    private var resultUser : Users?= null
+    private var id:Int?=null
+    private var resss : Array<Users>?=null
+
+
+
+    override fun onStart() {
+        super.onStart()
+        getUser()
+    }
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
@@ -52,6 +78,8 @@ class LoginPage : AppCompatActivity() {
         val binding: ActivityLoginPageBinding= DataBindingUtil.setContentView(this, R.layout.activity_login_page)
 
         createNotificationChannel()
+
+        queue= Volley.newRequestQueue(this)
 
         mainLayout=binding.mainLayout
 
@@ -141,6 +169,45 @@ class LoginPage : AppCompatActivity() {
             if(password.isEmpty()){
                 tietPassword.setError("Password must be filled with text!")
                 checkLogin=false
+
+            }
+
+//            for (element in resultUser){
+//                if(element.username.equals(username) && element.password.equals(password)){
+//                    val intent=Intent(this@LoginPage, homeActivity::class.java)
+//                    intent.putExtra("usernameLogin",username)
+//                    intent.putExtra("idLogin", element.id)
+//
+//                    //save to sharedPreference
+//                    val editor: SharedPreferences.Editor= sharedPreferences!!.edit()
+//                    editor.putString(namePref,username)
+//                    editor.putString(passPref,password)
+//                    editor.apply()
+//
+//                    startActivity(intent)
+//                }else{
+//                    Snackbar.make(mainLayout,"User not found", Snackbar.LENGTH_LONG).show()
+//                }
+//            }
+
+            for (element in resss!!){
+                if(element.username.equals(username) && element.password.equals(password)){
+                    checkLogin=true
+                    val intent=Intent(this@LoginPage, homeActivity::class.java)
+                    intent.putExtra("usernameLogin",username)
+                    intent.putExtra("idLogin", element.id)
+
+                    //save to sharedPreference
+                    val editor: SharedPreferences.Editor= sharedPreferences!!.edit()
+                    editor.putString(namePref,username)
+                    editor.putString(passPref,password)
+                    editor.apply()
+
+                    startActivity(intent)
+
+                }else{
+                    Snackbar.make(mainLayout,"User not found", Snackbar.LENGTH_LONG).show()
+                }
             }
 
 //            for (item in LoginInfo.listOfLogin){
@@ -154,38 +221,34 @@ class LoginPage : AppCompatActivity() {
 //            }
 
 
-            CoroutineScope(Dispatchers.IO).launch {
-                var resultCheckUser: List<User> = db.userDao().checkUser(username,password)
-                println("hasil: " + resultCheckUser)
-
-                if(resultCheckUser.isNullOrEmpty()){
-                    Snackbar.make(mainLayout,"User not found", Snackbar.LENGTH_LONG).show()
-                    return@launch
-                }
-
-                if(resultCheckUser[0].username.equals(username) && resultCheckUser[0].password.equals(password)){
-                    checkLogin=true
-                    val intent=Intent(this@LoginPage, homeActivity::class.java)
-                    intent.putExtra("usernameLogin",username)
-                    intent.putExtra("idLogin",resultCheckUser[0].id)
-
-                    if(resultCheckUser[0].id is Int){
-                        println("id int")
-                    }else{
-                        println("id buka int")
-                    }
-
-                    println(resultCheckUser[0].id)
-
-                    //save to sharedPreference
-                    val editor: SharedPreferences.Editor= sharedPreferences!!.edit()
-                    editor.putString(namePref,username)
-                    editor.putString(passPref,password)
-                    editor.apply()
-
-                    startActivity(intent)
-                }
-            }
+//            CoroutineScope(Dispatchers.IO).launch {
+//
+//                //ini jalan
+//                var resultCheckUser: List<User> = db.userDao().checkUser(username,password)
+//                println("hasil: " + resultCheckUser)
+//
+//                if(resultCheckUser.isNullOrEmpty()){
+//                    Snackbar.make(mainLayout,"User not found", Snackbar.LENGTH_LONG).show()
+//                    return@launch
+//                }
+//
+//                if(resultCheckUser[0].username.equals(username) && resultCheckUser[0].password.equals(password)){
+//                    checkLogin=true
+//                    val intent=Intent(this@LoginPage, homeActivity::class.java)
+//                    intent.putExtra("usernameLogin",username)
+//                    intent.putExtra("idLogin",resultCheckUser[0].id)
+//
+//                    println(resultCheckUser[0].id)
+//
+//                    //save to sharedPreference
+//                    val editor: SharedPreferences.Editor= sharedPreferences!!.edit()
+//                    editor.putString(namePref,username)
+//                    editor.putString(passPref,password)
+//                    editor.apply()
+//
+//                    startActivity(intent)
+//                }
+//            }
 
             //Snackbar.make(mainLayout,"User not found", Snackbar.LENGTH_LONG).show()
             //if(!checkLogin) return@setOnClickListener
@@ -210,6 +273,37 @@ class LoginPage : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel1)
         }
     }
+
+    private fun getUser(){
+
+        val stringRequest: StringRequest = object : StringRequest(Method.GET, UsersApi.GET_ALL_URL, Response.Listener { response ->
+            val gson= Gson()
+            val users : Array<Users> = gson.fromJson(response, Array<Users>::class.java)
+
+            resss=users
+
+        }, Response.ErrorListener { error ->
+            try {
+                val responseBody= String(error.networkResponse.data, StandardCharsets.UTF_8)
+                val errors= JSONObject(responseBody)
+                println(errors.getString("message"))
+            } catch (e:Exception){
+                println(e.message)
+            }
+        }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Accept"] = "Application/json"
+                return headers
+            }
+        }
+
+        queue!!.add(stringRequest)
+
+
+    }
+
 
 
 }

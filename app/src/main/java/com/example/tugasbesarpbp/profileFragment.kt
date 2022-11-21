@@ -11,12 +11,24 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.example.tugasbesarpbp.databinding.ActivityHomeBinding
 import android.content.Intent
+import com.android.volley.AuthFailureError
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
+import com.example.tugasbesarpbp.api.BillApi
+import com.example.tugasbesarpbp.api.UsersApi
 import com.example.tugasbesarpbp.databinding.FragmentProfileBinding
+import com.example.tugasbesarpbp.models.Bill
+import com.example.tugasbesarpbp.models.Users
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.nio.charset.StandardCharsets
 
 class profileFragment : Fragment() {
 
@@ -31,6 +43,8 @@ class profileFragment : Fragment() {
 
     lateinit var binding: FragmentProfileBinding
 
+    private var queue: RequestQueue? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,6 +58,8 @@ class profileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        queue= Volley.newRequestQueue(requireContext())
+
         tvUsername=binding.txtUsernameProfile
         tvEmail=binding.txtEmailProfile
         tvDate=binding.txtDateProfile
@@ -51,15 +67,17 @@ class profileFragment : Fragment() {
 
         val userId= requireActivity().intent.getIntExtra("idLogin",0)
 
-        CoroutineScope(Dispatchers.IO).launch{
-            println("user id=" + userId)
-            val resultCheckUser: List<User> = db.userDao().getUserById(userId)
-            println("hasil=" + resultCheckUser)
-            tvUsername.setText("Username:" +resultCheckUser[0].username)
-            tvEmail.setText("Email:" +resultCheckUser[0].email)
-            tvDate.setText("Birth:" +resultCheckUser[0].date)
-            tvPhone.setText("Phone number:" +resultCheckUser[0].NoTelp)
-        }
+//        CoroutineScope(Dispatchers.IO).launch{
+//            println("user id=" + userId)
+//            val resultCheckUser: List<User> = db.userDao().getUserById(userId)
+//            println("hasil=" + resultCheckUser)
+//            tvUsername.setText("Username:" +resultCheckUser[0].username)
+//            tvEmail.setText("Email:" +resultCheckUser[0].email)
+//            tvDate.setText("Birth:" +resultCheckUser[0].date)
+//            tvPhone.setText("Phone number:" +resultCheckUser[0].NoTelp)
+//        }
+
+        getUsersById(userId)
 
 
         btnUpdate=binding.btnUpdateProfile
@@ -76,5 +94,39 @@ class profileFragment : Fragment() {
                 }
             }).show()
         }
+    }
+
+    private fun getUsersById(id: Int){
+        val stringRequest: StringRequest = object : StringRequest(Method.GET, UsersApi.GET_BY_ID_URL + id, Response.Listener { response ->
+            val gson = Gson()
+            val users: Array<Users> = gson.fromJson(response, Array<Users>::class.java)
+
+            tvUsername.setText("Username:" +users[0].username)
+            tvEmail.setText("Email:" +users[0].email)
+            tvDate.setText("Birth:" +users[0].date)
+            tvPhone.setText("Phone number:" +users[0].noTelp)
+
+
+
+
+        }, Response.ErrorListener { error ->
+            try {
+                val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
+                val errors= JSONObject(responseBody)
+
+            }catch (e:Exception){}
+
+        })
+
+        {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Accept"] = "Application/json"
+                return headers
+            }
+        }
+
+        queue!!.add(stringRequest)
     }
 }

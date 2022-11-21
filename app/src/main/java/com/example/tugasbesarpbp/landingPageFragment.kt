@@ -64,7 +64,6 @@ class landingPageFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             val idUser= requireActivity().intent.getIntExtra("idLogin",0)
 
-            println("tipe id" + idUser::class.simpleName)
 
             val result= db.pocketDao().getPocket(idUser)
             val adapter: rvPocketAdapter = rvPocketAdapter(result,object : rvPocketAdapter.OnAdapterListener{

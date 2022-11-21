@@ -13,14 +13,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.android.volley.AuthFailureError
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.tugasbesarpbp.R.drawable
 import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
+import com.example.tugasbesarpbp.api.UsersApi
 import com.example.tugasbesarpbp.databinding.ActivityRegisterPageBinding
+import com.example.tugasbesarpbp.models.Users
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.nio.charset.StandardCharsets
 import java.util.*
 
 
@@ -43,6 +53,8 @@ class RegisterPage : AppCompatActivity() {
     private val CHANNEL="channel_notification"
     private val notification=100
 
+    private var queue : RequestQueue? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
@@ -50,6 +62,8 @@ class RegisterPage : AppCompatActivity() {
         setContentView(binding.root)
 
         mainLayoutRegisterPage=binding.mainLayoutRegisterPage
+
+        queue = Volley.newRequestQueue(this)
 
         tietUsername=binding.tietUsernameRegister
         tietPassword=binding.tietPasswordRegister
@@ -109,6 +123,8 @@ class RegisterPage : AppCompatActivity() {
 
                 }
 
+                createUser()
+
                 createNotificationChannel()
                 sendNotification()
 
@@ -132,6 +148,51 @@ class RegisterPage : AppCompatActivity() {
             }
         }
     }
+
+    private fun createUser(){
+        val usernameRegister:String= tietUsername.text.toString()
+        val passwordRegister:String= tietPassword.text.toString()
+        val emailRegister:String= tietEmail.text.toString()
+        val dateRegister:String= tietDate.text.toString()
+        val noTelpRegister:String = tietNoTelp.text.toString()
+
+        var user= Users(usernameRegister, passwordRegister, emailRegister, dateRegister, noTelpRegister)
+
+        val stringRequest: StringRequest = object : StringRequest(Method.POST, UsersApi.ADD_URL, Response.Listener { response ->
+            val gson = Gson()
+            val user = gson.fromJson(response, Users::class.java)
+
+        }, Response.ErrorListener { error ->
+            try {
+                val responseBody= String(error.networkResponse.data, StandardCharsets.UTF_8)
+                val errors= JSONObject(responseBody)
+                println(errors.getString("message"))
+            } catch (e:Exception){
+                println(e.message)
+            }
+        }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers= HashMap<String, String>()
+                headers["Accept"]= "application/json"
+                return headers
+            }
+
+            @Throws(AuthFailureError::class)
+            override fun getBody(): ByteArray {
+                val gson= Gson()
+                val requestBody= gson.toJson(user)
+                return requestBody.toByteArray(StandardCharsets.UTF_8)
+            }
+
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
+        }
+
+        queue!!.add(stringRequest)
+    }
+
 
     private fun createNotificationChannel(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
