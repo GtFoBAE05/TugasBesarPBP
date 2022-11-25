@@ -16,6 +16,10 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.awesomedialog.AwesomeDialog
+import com.example.awesomedialog.body
+import com.example.awesomedialog.onPositive
+import com.example.awesomedialog.title
 import com.example.tugasbesarpbp.Room.Constant
 import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
@@ -23,6 +27,8 @@ import com.example.tugasbesarpbp.api.UsersApi
 import com.example.tugasbesarpbp.databinding.ActivityLoginPageBinding
 import com.example.tugasbesarpbp.entity.LoginInfo
 import com.example.tugasbesarpbp.models.Users
+import com.github.venom.Venom
+import com.github.venom.service.NotificationConfig
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
@@ -73,7 +79,27 @@ class LoginPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
-        //setContentView(R.layout.activity_login_page)
+        setContentView(R.layout.activity_login_page)
+
+        val venom = Venom.createInstance(this)
+
+
+        val notification = NotificationConfig.Builder(this)
+            .buttonCancel(com.github.venom.R.string.venom_notification_button_cancel)
+            .buttonKill(getString(com.github.venom.R.string.venom_notification_button_kill))
+            .build()
+
+        venom.initialize(notification)
+        venom.start()
+
+        if(intent.getStringExtra("from").equals("register")){
+            AwesomeDialog.build(this)
+                .title("Congratulations")
+                .body("Your New Account has been created")
+                .onPositive("Okay") {
+                }
+        }
+
 
         val binding: ActivityLoginPageBinding= DataBindingUtil.setContentView(this, R.layout.activity_login_page)
 
@@ -85,6 +111,7 @@ class LoginPage : AppCompatActivity() {
 
         tietUsername=binding.tietUsernameLogin
         tietPassword=binding.tietPasswordLogin
+
 
         btnClear=binding.btnClear
         btnToRegisterPage=binding.btnToRegister

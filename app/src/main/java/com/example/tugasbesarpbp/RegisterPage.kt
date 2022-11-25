@@ -9,6 +9,7 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.NotificationCompat
@@ -18,6 +19,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.awesomedialog.*
 import com.example.tugasbesarpbp.R.drawable
 import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
@@ -26,6 +28,10 @@ import com.example.tugasbesarpbp.databinding.ActivityRegisterPageBinding
 import com.example.tugasbesarpbp.models.Users
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
+import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
+import com.wajahatkarim3.easyvalidation.core.view_ktx.validEmail
+import com.wajahatkarim3.easyvalidation.core.view_ktx.validNumber
+import kotlinx.android.synthetic.main.activity_register_page.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -94,27 +100,32 @@ class RegisterPage : AppCompatActivity() {
             val dateRegister:String= tietDate.text.toString()
             val noTelpRegister:String = tietNoTelp.text.toString()
 
-            if(usernameRegister.isEmpty()){
-                tietUsername.setError("Username must be filled with text!")
+//            if(usernameRegister.isEmpty()){
+//                tietUsername.setError("Username must be filled with text!")
+//            }
+
+            usernameRegister.nonEmpty(){msg ->
+                tietUsername.setError(msg)
             }
 
-            if(passwordRegister.isEmpty()){
-                tietPassword.setError("Password must be filled with text!")
+            passwordRegister.nonEmpty(){msg ->
+                tietPassword.setError(msg)
             }
 
-            if(emailRegister.isEmpty()){
-                tietEmail.setError("Email must be filled with text!")
+            emailRegister.validEmail(){msg ->
+                tietEmail.setError(msg)
             }
 
-            if(dateRegister.isEmpty()){
-                tietDate.setError("Date must be selected!")
+            dateRegister.nonEmpty(){msg ->
+                tietDateRegister.setError(msg)
             }
 
-            if(noTelpRegister.isEmpty()){
-                tietNoTelp.setError("Phone Number must be filled with text!")
+            noTelpRegister.validNumber(){msg ->
+                tietNoTelp.setError(msg)
             }
 
-            if(usernameRegister.isNotEmpty() && passwordRegister.isNotEmpty() && emailRegister.isNotEmpty() && dateRegister.isNotEmpty() && noTelpRegister.isNotEmpty()){
+            if(usernameRegister.nonEmpty() && passwordRegister.nonEmpty() && emailRegister.validEmail() && dateRegister.nonEmpty() && noTelpRegister.validNumber()){
+
                 val intent= Intent(this@RegisterPage, LoginPage::class.java)
 
                 CoroutineScope(Dispatchers.IO).launch {
@@ -128,9 +139,9 @@ class RegisterPage : AppCompatActivity() {
                 createNotificationChannel()
                 sendNotification()
 
-                intent.putExtra("from","register")
+           intent.putExtra("from","register")
+                    startActivity(intent)
 
-                startActivity(intent)
 
 //                val bundle = Bundle()
 //
