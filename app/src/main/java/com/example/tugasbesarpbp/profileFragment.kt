@@ -96,8 +96,7 @@ class profileFragment : Fragment() {
     )
 
     private fun createPdf(nama: String, umur: String, tlp: String, alamat: String, kampus: String) {
-        //ini berguna untuk akses Writing ke Storage HP kalian dalam mode Download.
-        //harus diketik jangan COPAS!!!!
+
         val pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
         val file = File(pdfPath, "pdf_TugasBesarPBP.pdf")
         FileOutputStream(file)
