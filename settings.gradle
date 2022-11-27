@@ -15,5 +15,9 @@ dependencyResolutionManagement {
 
     }
 }
+dependencies {
+    ...
+    implementation 'io.github.shashank02051997:FancyToast:2.0.2'
+}
 rootProject.name = "TugasBesarPBP"
 include ':app'
