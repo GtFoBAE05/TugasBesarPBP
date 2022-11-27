@@ -15,6 +15,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.pdf.PdfDocument
+import android.media.Image
 import android.os.Build
 import android.os.Environment
 import android.widget.Toast
@@ -44,6 +45,22 @@ import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import com.itextpdf.barcodes.BarcodeQRCode
+import com.itextpdf.io.image.ImageDataFactory
+import com.itextpdf.io.source.ByteArrayOutputStream
+import com.itextpdf.kernel.colors.ColorConstants
+import com.itextpdf.kernel.geom.PageSize
+import com.itextpdf.kernel.pdf.PdfDocument
+import com.itextpdf.kernel.pdf.PdfWriter
+import com.itextpdf.layout.Document
+import com.itextpdf.layout.element.Cell
+import com.itextpdf.layout.element.Image
+import com.itextpdf.layout.element.Paragraph
+import com.itextpdf.layout.element.Table
+import com.itextpdf.layout.property.HorizontalAlignment
+import com.itextpdf.layout.property.TextAlignment
+import com.shashank.sony.fancytoastlib.FancyToast
+import org.intellij.lang.annotations.JdkConstants
 
 class profileFragment : Fragment() {
 
@@ -77,7 +94,7 @@ class profileFragment : Fragment() {
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     if (nama.isEmpty() && umur.isEmpty() && tlp.isEmpty() && alamat.isEmpty() && kampus.isEmpty()){
-                        Toast.makeText(applicationContext,"Semuanya Tidak boleh Kosong" , Toast.LENGTH_SHORT).show()
+                        FancyToast.makeText(applicationContext,"Semuanya Tidak boleh Kosong" , FancyToast.LENGTH_SHORT).show()
                     }else {
                         createPdf(nama, umur, tlp, alamat, kampus)
                     }
@@ -128,7 +145,7 @@ class profileFragment : Fragment() {
         val width = floatArrayOf(100f, 100f)
         val table = Table(width)
         //pengisian table dengan data-data
-        table.setHorizontalAlignment(HorizontalAlignment.CENTER)
+        table.setHorizontalAlignment(JdkConstants.HorizontalAlignment.CENTER)
         table.addCell(Cell().add(Paragraph("Nama Diri")))
         table.addCell(Cell().add(Paragraph(nama)))
         table.addCell(Cell().add(Paragraph("Umur")))
