@@ -22,7 +22,10 @@ import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.MapController
 import org.osmdroid.views.overlay.*
+import org.osmdroid.views.overlay.compass.CompassOverlay
+import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
+import org.osmdroid.views.overlay.gridlines.LatLonGridlineOverlay2
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 
@@ -35,6 +38,8 @@ class mapFragment : Fragment() {
     lateinit var overlayItem: ArrayList<OverlayItem>
 
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,10 +47,12 @@ class mapFragment : Fragment() {
         // Inflate the layout for this fragment
         val binding= FragmentMapBinding.inflate(inflater, container, false)
         val view= binding!!.root
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         Configuration.getInstance().load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
 
@@ -60,6 +67,23 @@ class mapFragment : Fragment() {
         mapController.zoomTo(15)
 
 
+        //compass
+        var compassOverlay= CompassOverlay(context, InternalCompassOrientationProvider(context), mapView)
+        compassOverlay.enableCompass()
+        mapView.overlays.add(compassOverlay)
+
+        //rotation gesture
+        var rotationGestureOverlay = RotationGestureOverlay(mapView)
+        rotationGestureOverlay.isEnabled
+        mapView.setMultiTouchControls(true)
+        mapView.overlays.add(rotationGestureOverlay)
+
+        //scale bar
+        val dm: DisplayMetrics= requireContext().resources.displayMetrics
+        val scaleBarOverlay = ScaleBarOverlay(mapView)
+        scaleBarOverlay.setCentred(true)
+        scaleBarOverlay.setScaleBarOffset(dm.widthPixels / 2, 10)
+        mapView.overlays.add(scaleBarOverlay)
 
         getLocationMarker()
 

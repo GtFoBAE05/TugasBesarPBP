@@ -54,7 +54,6 @@ class landingPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         tvUsername= binding.txtUserName
 
         val username=requireActivity().intent.getStringExtra("usernameLogin")
