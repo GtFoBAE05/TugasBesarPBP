@@ -1,5 +1,6 @@
 package com.example.tugasbesarpbp
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.FragmentActivity
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -18,18 +20,23 @@ import com.example.tugasbesarpbp.api.BillApi
 import com.example.tugasbesarpbp.models.Bill
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
+import com.musfickjamil.snackify.Snackify
 import kotlinx.android.synthetic.main.fragment_bill_detail.view.*
 import kotlinx.android.synthetic.main.rv_bill.view.*
 import org.json.JSONObject
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.nio.charset.StandardCharsets
+import java.util.*
+import kotlin.collections.HashMap
 
 class billDetailFragment : Fragment() {
     private var queue: RequestQueue? = null
     lateinit var tietBillName:TextInputEditText
     lateinit var tietBillDate:TextInputEditText
     lateinit var tietBillAmount:TextInputEditText
+
+    var picker: DatePickerDialog? = null
 
 
     override fun onCreateView(
@@ -54,6 +61,20 @@ class billDetailFragment : Fragment() {
         tietBillName=view.tietDetailBillName
         tietBillDate =view.tietDetailBillDate
         tietBillAmount = view.tietDetailBillAmount
+
+        tietBillDate.setOnClickListener {
+            val cldr: Calendar = Calendar.getInstance()
+            val day: Int = cldr.get(Calendar.DAY_OF_MONTH)
+            val month: Int = cldr.get(Calendar.MONTH)
+            val year: Int = cldr.get(Calendar.YEAR)
+            picker = DatePickerDialog(requireContext(),
+                { view, year, monthOfYear, dayOfMonth -> tietBillDate.setText(dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year) },
+                year,
+                month,
+                day
+            )
+            picker!!.show()
+        }
 
 
         val btnUpdate: Button= view.btnUpdateBill
@@ -156,6 +177,8 @@ class billDetailFragment : Fragment() {
                 if(bill!=null){
                     println("berhasil update")
                 }
+
+
 
                 requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, billFragment()).commit()
 

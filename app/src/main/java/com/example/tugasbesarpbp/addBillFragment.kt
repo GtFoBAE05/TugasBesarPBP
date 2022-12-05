@@ -1,5 +1,7 @@
 package com.example.tugasbesarpbp
 
+import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +16,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.tugasbesarpbp.api.BillApi
+import com.example.tugasbesarpbp.databinding.FragmentAddBillBinding
 import com.example.tugasbesarpbp.models.Bill
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
@@ -23,31 +26,53 @@ import org.json.JSONObject
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.nio.charset.StandardCharsets
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class addBillFragment : Fragment() {
     private var tietBillName : TextInputEditText? = null
-    private var tietBillDate: TextInputEditText?=null
+    private lateinit var tietBillDate: TextInputEditText
     private var tietBillAmount: TextInputEditText?=null
     private var btnAdd : Button? = null
     private var queue : RequestQueue? = null
+    var picker: DatePickerDialog? = null
+
+    lateinit var binding: FragmentAddBillBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_bill, container, false)
+        binding = FragmentAddBillBinding.inflate(inflater, container, false)
+        val view =  binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         queue = Volley.newRequestQueue(requireContext())
 
-        tietBillName = view.tietAddBillName
-        tietBillDate = view.tietAddBillDate
-        tietBillAmount = view.tietAddBillAmount
+        tietBillName = binding.tietAddBillName
+        tietBillDate = binding.tietAddBillDate
+        tietBillAmount = binding.tietAddBillAmount
+
+        tietBillDate.setOnClickListener {
+            val cldr: Calendar = Calendar.getInstance()
+            val day: Int = cldr.get(Calendar.DAY_OF_MONTH)
+            val month: Int = cldr.get(Calendar.MONTH)
+            val year: Int = cldr.get(Calendar.YEAR)
+            picker = DatePickerDialog(requireContext(),
+                { view, year, monthOfYear, dayOfMonth -> tietBillDate.setText(dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year) },
+                year,
+                month,
+                day
+            )
+            picker!!.show()
+        }
 
 
         var btnAdd = view.btnAddBillButton

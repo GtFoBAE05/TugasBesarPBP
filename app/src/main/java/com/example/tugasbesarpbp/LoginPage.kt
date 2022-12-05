@@ -33,6 +33,7 @@ import com.github.venom.service.NotificationConfig
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
+import com.musfickjamil.snackify.Snackify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -149,7 +150,9 @@ class LoginPage : AppCompatActivity() {
                     tietUsername.setText(getLastUser.last().username)
                     tietPassword.setText(getLastUser.last().password)
 
-                    Snackbar.make(mainLayout,"success fill login form", Snackbar.LENGTH_LONG).show()
+                    Snackify.success(mainLayout, "success fill login form", Snackify.LENGTH_LONG).show()
+
+//                    Snackbar.make(mainLayout,"success fill login form", Snackbar.LENGTH_LONG).show()
                 }
 
 
@@ -177,8 +180,8 @@ class LoginPage : AppCompatActivity() {
         btnClear.setOnClickListener {
             tietUsername.setText("")
             tietPassword.setText("")
-
-            Snackbar.make(mainLayout,"Text Cleared Success", Snackbar.LENGTH_LONG).show()
+            Snackify.success(mainLayout,"Text Cleared Success", Snackify.LENGTH_LONG).show()
+//            Snackbar.make(mainLayout,"Text Cleared Success", Snackbar.LENGTH_LONG).show()
         }
 
         btnToRegisterPage.setOnClickListener {
