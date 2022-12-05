@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.content.res.ResourcesCompat
 import com.example.tugasbesarpbp.databinding.FragmentPocketBinding
 import com.example.tugasbesarpbp.databinding.FragmentPocketDetailBinding
 import com.example.tugasbesarpbp.pocketRoom.PocketDB
@@ -16,6 +17,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 
 class pocketDetailFragment : Fragment() {
 
@@ -69,18 +72,44 @@ class pocketDetailFragment : Fragment() {
         btnUpdate=binding.buttonUpdatePocketDetailPage
         btnUpdate.setOnClickListener {
 
-            CoroutineScope(Dispatchers.IO).launch {
-                var pocketId= requireActivity().intent.getIntExtra("pocketId",0)
-                var result=db.pocketDao().getPocketById(pocketId)
+            if(etPocketName.text.isEmpty()){
+                MotionToast.createToast(
+                    requireActivity(),
+                    "ERROR ☹️",
+                    "Nama pocket tidak boleh kosong",
+                    MotionToastStyle.ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(
+                        requireActivity(),
+                        www.sanju.motiontoast.R.font.helvetica_regular
+                    )
+                )
+            }else if(etPocketBalance.text.toString().isEmpty()){
+                MotionToast.createToast(requireActivity(),
+                    "ERROR ☹️",
+                    "Nominal tidak boleh kosong",
+                    MotionToastStyle.ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(requireActivity(), www.sanju.motiontoast.R.font.helvetica_regular))
+            }else{
+                CoroutineScope(Dispatchers.IO).launch {
+                    var pocketId= requireActivity().intent.getIntExtra("pocketId",0)
+                    var result=db.pocketDao().getPocketById(pocketId)
 
-                var userId=result[0].userId
-                var id=result[0].id
-                val nameUpdate=etPocketName.text.toString()
-                val balanceUpdate:Double=etPocketBalance.text.toString().toDouble()
+                    var userId=result[0].userId
+                    var id=result[0].id
+                    val nameUpdate=etPocketName.text.toString()
+                    val balanceUpdate:Double=etPocketBalance.text.toString().toDouble()
 
-                db.pocketDao().updatePocket(pocket(id, userId, nameUpdate, balanceUpdate))
-                requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView,pocketFragment()).commit()
+                    db.pocketDao().updatePocket(pocket(id, userId, nameUpdate, balanceUpdate))
+                    requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView,pocketFragment()).commit()
+                }
             }
+
+
+
 
         }
 

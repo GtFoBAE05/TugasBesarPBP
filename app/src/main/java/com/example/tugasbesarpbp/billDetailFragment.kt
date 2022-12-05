@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -20,6 +21,8 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_bill_detail.view.*
 import kotlinx.android.synthetic.main.rv_bill.view.*
 import org.json.JSONObject
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 import java.nio.charset.StandardCharsets
 
 class billDetailFragment : Fragment() {
@@ -101,51 +104,95 @@ class billDetailFragment : Fragment() {
     }
 
     private fun updateBill(id: Int, userId: Int){
-        val bill = Bill(
-            userId, tietBillName.text.toString(),tietBillDate.text.toString(),tietBillAmount.text.toString().toDouble()
-        )
 
-        val stringRequest: StringRequest= object : StringRequest(Method.PUT, BillApi.UPDATE_URL + id, Response.Listener { response ->
-            val gson = Gson()
-            var bill = gson.fromJson(response, Bill::class.java)
+        if(tietBillName.text.toString().isEmpty()){
+            MotionToast.createToast(
+                requireActivity(),
+                "ERROR ☹️",
+                "Nama Bill tidak boleh kosong",
+                MotionToastStyle.ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                ResourcesCompat.getFont(
+                    requireActivity(),
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        }else if(tietBillDate.text.toString().isEmpty()){
+            MotionToast.createToast(
+                requireActivity(),
+                "ERROR ☹️",
+                "Tanggal Bill tidak boleh kosong",
+                MotionToastStyle.ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                ResourcesCompat.getFont(
+                    requireActivity(),
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        }else if(tietBillAmount.text.toString().isEmpty()){
+            MotionToast.createToast(
+                requireActivity(),
+                "ERROR ☹️",
+                "Nominal Bill tidak boleh kosong",
+                MotionToastStyle.ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                ResourcesCompat.getFont(
+                    requireActivity(),
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        }else{
+            val bill = Bill(
+                userId, tietBillName.text.toString(),tietBillDate.text.toString(),tietBillAmount.text.toString().toDouble()
+            )
 
-            if(bill!=null){
-                println("berhasil update")
-            }
-
-            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, billFragment()).commit()
-
-
-        }, Response.ErrorListener { error ->
-            try {
-                val responseBody= String(error.networkResponse.data, StandardCharsets.UTF_8)
-                val errors= JSONObject(responseBody)
-                println(errors.getString("message"))
-            } catch (e:Exception){
-                println(e.message)
-            }
-
-        })
-
-        {
-            @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String> {
-                val headers= HashMap<String, String>()
-                headers["Accept"]= "application/json"
-                return headers
-            }
-            override fun getBody(): ByteArray {
+            val stringRequest: StringRequest= object : StringRequest(Method.PUT, BillApi.UPDATE_URL + id, Response.Listener { response ->
                 val gson = Gson()
-                val requestBody = gson.toJson(bill)
-                return requestBody.toByteArray(StandardCharsets.UTF_8)
+                var bill = gson.fromJson(response, Bill::class.java)
+
+                if(bill!=null){
+                    println("berhasil update")
+                }
+
+                requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, billFragment()).commit()
+
+
+            }, Response.ErrorListener { error ->
+                try {
+                    val responseBody= String(error.networkResponse.data, StandardCharsets.UTF_8)
+                    val errors= JSONObject(responseBody)
+                    println(errors.getString("message"))
+                } catch (e:Exception){
+                    println(e.message)
+                }
+
+            })
+
+            {
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+                    val headers= HashMap<String, String>()
+                    headers["Accept"]= "application/json"
+                    return headers
+                }
+                override fun getBody(): ByteArray {
+                    val gson = Gson()
+                    val requestBody = gson.toJson(bill)
+                    return requestBody.toByteArray(StandardCharsets.UTF_8)
+                }
+
+                override fun getBodyContentType(): String {
+                    return "application/json"
+                }
             }
 
-            override fun getBodyContentType(): String {
-                return "application/json"
-            }
+            queue!!.add(stringRequest)
         }
 
-        queue!!.add(stringRequest)
+
 
     }
 
