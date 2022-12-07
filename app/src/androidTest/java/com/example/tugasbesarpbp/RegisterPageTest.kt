@@ -4,6 +4,8 @@ package com.example.tugasbesarpbp
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -46,6 +48,7 @@ class RegisterPageTest {
             )
         )
         materialButton.perform(click())
+        onView(isRoot()).perform(waitFor(3000))
 
         val textInputEditText = onView(
             allOf(
@@ -61,6 +64,7 @@ class RegisterPageTest {
             )
         )
         textInputEditText.perform(replaceText("dini"), closeSoftKeyboard())
+        onView(isRoot()).perform(waitFor(3000))
 
         val materialButton2 = onView(
             allOf(
@@ -79,6 +83,7 @@ class RegisterPageTest {
             )
         )
         materialButton2.perform(click())
+        onView(isRoot()).perform(waitFor(3000))
 
         val textInputEditText2 = onView(
             allOf(
@@ -94,6 +99,7 @@ class RegisterPageTest {
             )
         )
         textInputEditText2.perform(replaceText("123"), closeSoftKeyboard())
+        onView(isRoot()).perform(waitFor(3000))
 
         val materialButton3 = onView(
             allOf(
@@ -112,6 +118,7 @@ class RegisterPageTest {
             )
         )
         materialButton3.perform(click())
+        onView(isRoot()).perform(waitFor(3000))
 
         val textInputEditText3 = onView(
             allOf(
@@ -127,6 +134,7 @@ class RegisterPageTest {
             )
         )
         textInputEditText3.perform(replaceText("dini"), closeSoftKeyboard())
+        onView(isRoot()).perform(waitFor(3000))
 
         val materialButton4 = onView(
             allOf(
@@ -145,6 +153,7 @@ class RegisterPageTest {
             )
         )
         materialButton4.perform(click())
+        onView(isRoot()).perform(waitFor(3000))
 
         val textInputEditText4 = onView(
             allOf(
@@ -160,6 +169,7 @@ class RegisterPageTest {
             )
         )
         textInputEditText4.perform(replaceText("dini@gmail.com"))
+        onView(isRoot()).perform(waitFor(3000))
 
         val textInputEditText5 = onView(
             allOf(
@@ -175,6 +185,7 @@ class RegisterPageTest {
             )
         )
         textInputEditText5.perform(closeSoftKeyboard())
+        onView(isRoot()).perform(waitFor(3000))
 
         val materialButton5 = onView(
             allOf(
@@ -193,6 +204,7 @@ class RegisterPageTest {
             )
         )
         materialButton5.perform(click())
+        onView(isRoot()).perform(waitFor(3000))
 
         val textInputEditText6 = onView(
             allOf(
@@ -208,6 +220,7 @@ class RegisterPageTest {
             )
         )
         textInputEditText6.perform(click())
+        onView(isRoot()).perform(waitFor(3000))
 
         val materialButton6 = onView(
             allOf(
@@ -222,6 +235,7 @@ class RegisterPageTest {
             )
         )
         materialButton6.perform(scrollTo(), click())
+        onView(isRoot()).perform(waitFor(3000))
 
         val materialButton7 = onView(
             allOf(
@@ -240,6 +254,7 @@ class RegisterPageTest {
             )
         )
         materialButton7.perform(click())
+        onView(isRoot()).perform(waitFor(3000))
 
         val textInputEditText7 = onView(
             allOf(
@@ -255,6 +270,7 @@ class RegisterPageTest {
             )
         )
         textInputEditText7.perform(replaceText("123"), closeSoftKeyboard())
+        onView(isRoot()).perform(waitFor(3000))
 
         val materialButton8 = onView(
             allOf(
@@ -273,6 +289,7 @@ class RegisterPageTest {
             )
         )
         materialButton8.perform(click())
+        onView(isRoot()).perform(waitFor(3000))
 
         val materialTextView = onView(
             allOf(
@@ -291,6 +308,8 @@ class RegisterPageTest {
             )
         )
         materialTextView.perform(click())
+        onView(isRoot()).perform(waitFor(3000))
+
     }
 
     private fun childAtPosition(
@@ -310,4 +329,21 @@ class RegisterPageTest {
             }
         }
     }
+
+    fun waitFor(delay:Long): ViewAction {
+        return object : ViewAction {
+            override fun getConstraints(): Matcher<View> {
+                return isRoot()
+            }
+
+            override fun getDescription(): String {
+                return "wait for " + delay + " milliseconds"
+            }
+
+            override fun perform(uiController: UiController?, view: View?) {
+                uiController!!.loopMainThreadForAtLeast(delay)
+            }
+        }
+    }
+
 }

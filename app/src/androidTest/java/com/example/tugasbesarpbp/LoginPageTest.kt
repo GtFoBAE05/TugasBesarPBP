@@ -4,6 +4,8 @@ package com.example.tugasbesarpbp
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -45,6 +47,7 @@ class LoginPageTest {
             )
         )
         materialButton.perform(click())
+        onView(isRoot()).perform(waitFor(3000))
 
         val textInputEditText = onView(
             allOf(
@@ -60,6 +63,7 @@ class LoginPageTest {
             )
         )
         textInputEditText.perform(replaceText("dini"), closeSoftKeyboard())
+        onView(isRoot()).perform(waitFor(3000))
 
         val materialButton2 = onView(
             allOf(
@@ -78,6 +82,7 @@ class LoginPageTest {
             )
         )
         materialButton2.perform(click())
+        onView(isRoot()).perform(waitFor(3000))
 
         val textInputEditText2 = onView(
             allOf(
@@ -93,6 +98,7 @@ class LoginPageTest {
             )
         )
         textInputEditText2.perform(replaceText("123"), closeSoftKeyboard())
+        onView(isRoot()).perform(waitFor(3000))
 
         val materialButton3 = onView(
             allOf(
@@ -111,6 +117,7 @@ class LoginPageTest {
             )
         )
         materialButton3.perform(click())
+        onView(isRoot()).perform(waitFor(3000))
     }
 
     private fun childAtPosition(
@@ -127,6 +134,22 @@ class LoginPageTest {
                 val parent = view.parent
                 return parent is ViewGroup && parentMatcher.matches(parent)
                         && view == parent.getChildAt(position)
+            }
+        }
+    }
+
+    fun waitFor(delay:Long): ViewAction {
+        return object : ViewAction {
+            override fun getConstraints(): Matcher<View> {
+                return isRoot()
+            }
+
+            override fun getDescription(): String {
+                return "wait for " + delay + " milliseconds"
+            }
+
+            override fun perform(uiController: UiController?, view: View?) {
+                uiController!!.loopMainThreadForAtLeast(delay)
             }
         }
     }

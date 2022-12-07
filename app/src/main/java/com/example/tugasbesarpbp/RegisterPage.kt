@@ -117,7 +117,7 @@ class RegisterPage : AppCompatActivity() {
             }
 
             dateRegister.nonEmpty(){msg ->
-                tietDateRegister.setError(msg)
+                tietDate.setError(msg)
             }
 
             noTelpRegister.validNumber(){msg ->
