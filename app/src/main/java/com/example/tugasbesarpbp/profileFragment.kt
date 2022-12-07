@@ -1,6 +1,6 @@
 package com.example.tugasbesarpbp
 
-
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,22 +10,42 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import com.example.tugasbesarpbp.databinding.ActivityHomeBinding
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.pdf.PdfDocument
+import android.media.Image
+import android.os.Build
+import android.os.Environment
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.databinding.DataBindingUtil.setContentView
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
+import com.example.tugasbesarpbp.api.BillApi
 import com.example.tugasbesarpbp.api.UsersApi
 import com.example.tugasbesarpbp.databinding.FragmentProfileBinding
-
+import com.example.tugasbesarpbp.models.Bill
 import com.example.tugasbesarpbp.models.Users
 import com.google.gson.Gson
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
-
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.nio.charset.StandardCharsets
-
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import org.intellij.lang.annotations.JdkConstants
 
 class profileFragment : Fragment() {
 
@@ -41,6 +61,7 @@ class profileFragment : Fragment() {
     lateinit var binding: FragmentProfileBinding
 
     private var queue: RequestQueue? = null
+
     override fun onStart() {
         super.onStart()
         val userId= requireActivity().intent.getIntExtra("idLogin",0)
