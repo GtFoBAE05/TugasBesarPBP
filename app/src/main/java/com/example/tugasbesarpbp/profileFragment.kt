@@ -173,6 +173,12 @@ class profileFragment : Fragment() {
 //        Toast.makeText(this, "Pdf Created", Toast.LENGTH_LONG).show()
 //    }
 
+    override fun onStart() {
+        super.onStart()
+        val userId= requireActivity().intent.getIntExtra("idLogin",0)
+        getUsersById(userId)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -205,7 +211,7 @@ class profileFragment : Fragment() {
 //            tvPhone.setText("Phone number:" +resultCheckUser[0].NoTelp)
 //        }
 
-        getUsersById(userId)
+        //getUsersById(userId)
 
 
         btnUpdate=binding.btnUpdateProfile

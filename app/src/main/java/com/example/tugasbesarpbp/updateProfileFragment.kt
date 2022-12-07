@@ -151,7 +151,7 @@ class updateProfileFragment : Fragment() {
     private fun getUsersById(id: Int){
         val stringRequest: StringRequest = object : StringRequest(Method.GET, UsersApi.GET_BY_ID_URL + id, Response.Listener { response ->
             val gson = Gson()
-            val users: Array<Users> = gson.fromJson(response, Array<Users>::class.java)
+            val users:Array<Users> = gson.fromJson(response, Array<Users>::class.java)
 
             tietUsername.setText(users[0].username)
             tietPassword.setText(users[0].password)
