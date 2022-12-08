@@ -8,7 +8,9 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.preference.PreferenceManager
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
@@ -39,7 +41,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
+import java.util.*
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
+import kotlin.collections.HashMap
 
 
 class LoginPage : AppCompatActivity() {
@@ -69,6 +83,10 @@ class LoginPage : AppCompatActivity() {
     private var id:Int?=null
     private var resss : Array<Users>?=null
 
+    val algorithm = "AES/CBC/PKCS5Padding"
+    val key = SecretKeySpec("1234567890123456".toByteArray(), "AES")
+    val iv = IvParameterSpec(ByteArray(16))
+
 
 
     override fun onStart() {
@@ -81,9 +99,7 @@ class LoginPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_login_page)
-
         val venom = Venom.createInstance(this)
-
 
         val notification = NotificationConfig.Builder(this)
             .buttonCancel(com.github.venom.R.string.venom_notification_button_cancel)
@@ -186,6 +202,7 @@ class LoginPage : AppCompatActivity() {
             startActivity(intent)
         }
 
+
         btnLogin.setOnClickListener {
             var checkLogin=false
             val username:String= tietUsername.text.toString()
@@ -225,7 +242,8 @@ class LoginPage : AppCompatActivity() {
             }
 
             for (element in resss!!){
-                if(element.username.equals(username) && element.password.equals(password)){
+                var pass = decrypt(algorithm,element.password,key, iv)
+                if(element.username.equals(username) && pass.equals(password)){
                     checkLogin=true
                     val intent=Intent(this@LoginPage, homeActivity::class.java)
                     intent.putExtra("usernameLogin",username)
@@ -334,10 +352,18 @@ class LoginPage : AppCompatActivity() {
         }
 
         queue!!.add(stringRequest)
-
-
     }
 
-
+    fun decrypt(algorithm: String, cipherText: String, key: SecretKeySpec, iv: IvParameterSpec): String {
+        val cipher = Cipher.getInstance(algorithm)
+        cipher.init(Cipher.DECRYPT_MODE, key, iv)
+        val plainText = cipher.doFinal(Base64.getDecoder().decode(cipherText))
+        return String(plainText)
+    }
 
 }
+
+
+
+
+

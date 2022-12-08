@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64.*
+import android.webkit.URLUtil.decode
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.NotificationCompat
@@ -20,12 +20,12 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.awesomedialog.*
-import com.example.tugasbesarpbp.R.drawable
 import com.example.tugasbesarpbp.Room.User
 import com.example.tugasbesarpbp.Room.UserDB
 import com.example.tugasbesarpbp.api.UsersApi
 import com.example.tugasbesarpbp.databinding.ActivityRegisterPageBinding
 import com.example.tugasbesarpbp.models.Users
+import com.google.android.gms.common.util.Base64Utils.decode
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
@@ -36,8 +36,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import java.io.ObjectOutputStream
 import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
 import java.util.*
+import javax.crypto.*
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 
 class RegisterPage : AppCompatActivity() {
@@ -60,6 +66,11 @@ class RegisterPage : AppCompatActivity() {
     private val notification=100
 
     private var queue : RequestQueue? = null
+    lateinit var ivValue: ByteArray
+
+    val algorithm = "AES/CBC/PKCS5Padding"
+    val key = SecretKeySpec("1234567890123456".toByteArray(), "AES")
+    val iv = IvParameterSpec(ByteArray(16))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -167,7 +178,9 @@ class RegisterPage : AppCompatActivity() {
         val dateRegister:String= tietDate.text.toString()
         val noTelpRegister:String = tietNoTelp.text.toString()
 
-        var user= Users(usernameRegister, passwordRegister, emailRegister, dateRegister, noTelpRegister)
+
+
+        var user= Users(usernameRegister,encrypt(algorithm, passwordRegister,key,iv), emailRegister, dateRegister, noTelpRegister)
 
         val stringRequest: StringRequest = object : StringRequest(Method.POST, UsersApi.ADD_URL, Response.Listener { response ->
             val gson = Gson()
@@ -245,5 +258,13 @@ class RegisterPage : AppCompatActivity() {
         }
 
     }
+
+    fun encrypt(algorithm: String, inputText: String, key: SecretKeySpec, iv: IvParameterSpec): String {
+        val cipher = Cipher.getInstance(algorithm)
+        cipher.init(Cipher.ENCRYPT_MODE, key, iv)
+        val cipherText = cipher.doFinal(inputText.toByteArray())
+        return Base64.getEncoder().encodeToString(cipherText)
+    }
+
 
 }
