@@ -77,9 +77,6 @@ class LoginPage : AppCompatActivity() {
     }
 
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
@@ -222,6 +219,10 @@ class LoginPage : AppCompatActivity() {
 //                    Snackbar.make(mainLayout,"User not found", Snackbar.LENGTH_LONG).show()
 //                }
 //            }
+
+            if(resss!!.size===0){
+                Snackify.success(mainLayout,"User not found", Snackify.LENGTH_LONG).show()
+            }
 
             for (element in resss!!){
                 if(element.username.equals(username) && element.password.equals(password)){

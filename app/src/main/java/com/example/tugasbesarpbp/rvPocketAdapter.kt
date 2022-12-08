@@ -1,21 +1,14 @@
 package com.example.tugasbesarpbp
 
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tugasbesarpbp.entity.Pocket
+import com.example.tugasbesarpbp.models.Pocket
 import com.example.tugasbesarpbp.pocketRoom.pocket
-import org.w3c.dom.Text
 
-class rvPocketAdapter(private val data:List<pocket>, private val listener: OnAdapterListener ): RecyclerView.Adapter<rvPocketAdapter.viewHolder>() {
+class rvPocketAdapter(private var data:List<Pocket>, private val listener: OnAdapterListener ): RecyclerView.Adapter<rvPocketAdapter.viewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
         val itemView= LayoutInflater.from(parent.context).inflate(R.layout.rv_pocket, parent, false)
@@ -24,8 +17,8 @@ class rvPocketAdapter(private val data:List<pocket>, private val listener: OnAda
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
         val currentItem= data[position]
-        holder.txtPocketName.text=currentItem.pocketName
-        holder.txtPocketBalance.text="$"+currentItem.pocketBalance
+        holder.txtPocketName.text=currentItem.name
+        holder.txtPocketBalance.text="$"+currentItem.balance
 
         holder.itemView.setOnClickListener {
             listener.onClick(currentItem)
@@ -56,7 +49,21 @@ class rvPocketAdapter(private val data:List<pocket>, private val listener: OnAda
     }
 
     interface OnAdapterListener{
-        fun onClick(pocket: pocket)
+        fun onClick(pocket: Pocket)
+    }
+
+    fun setList(id : Int, pocket: Array<Pocket>){
+        var result = ArrayList<Pocket>()
+
+        for (element in pocket){
+            if(element.userId==id){
+                result.add(element)
+            }
+        }
+
+        data = result.toList()
+        notifyDataSetChanged()
+
     }
 
 

@@ -94,12 +94,12 @@ class billDetailFragment : Fragment() {
     private fun getBillById(id: Int){
         val stringRequest: StringRequest= object : StringRequest(Method.GET, BillApi.GET_BY_ID_URL + id, Response.Listener { response ->
             val gson = Gson()
-            val bill: Array<Bill> = gson.fromJson(response, Array<Bill>::class.java)
+            val bill= gson.fromJson(response, Bill::class.java)
 
 
-            tietBillName!!.setText(bill[0].name)
-            tietBillDate!!.setText(bill[0].date)
-            tietBillAmount!!.setText(bill[0].amount.toString())
+            tietBillName!!.setText(bill.name)
+            tietBillDate!!.setText(bill.date)
+            tietBillAmount!!.setText(bill.amount.toString())
 
 
 

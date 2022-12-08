@@ -30,20 +30,15 @@ class BillAdapter (private var data: List<Bill>, context: Context, private val l
     private val context:Context
     private var billResult : MutableList<Bill>
     private var id:Int? = null
+
     init{
         billResult = ArrayList(data)
         this.context=context
-
     }
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int):ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.rv_bill,parent,false)
-
         return ViewHolder(itemView)
-
-
     }
 
     override fun getItemCount(): Int {

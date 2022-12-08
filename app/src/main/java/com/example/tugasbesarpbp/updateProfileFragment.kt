@@ -151,13 +151,13 @@ class updateProfileFragment : Fragment() {
     private fun getUsersById(id: Int){
         val stringRequest: StringRequest = object : StringRequest(Method.GET, UsersApi.GET_BY_ID_URL + id, Response.Listener { response ->
             val gson = Gson()
-            val users:Array<Users> = gson.fromJson(response, Array<Users>::class.java)
+            val users= gson.fromJson(response, Users::class.java)
 
-            tietUsername.setText(users[0].username)
-            tietPassword.setText(users[0].password)
-            tietEmail.setText(users[0].email)
-            tietDate.setText(users[0].date)
-            tietNoTelp.setText(users[0].noTelp)
+            tietUsername.setText(users.username)
+            tietPassword.setText(users.password)
+            tietEmail.setText(users.email)
+            tietDate.setText(users.date)
+            tietNoTelp.setText(users.noTelp)
 
         }, Response.ErrorListener { error ->
             try {

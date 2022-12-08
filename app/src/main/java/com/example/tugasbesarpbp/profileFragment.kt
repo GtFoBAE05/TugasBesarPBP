@@ -233,12 +233,12 @@ class profileFragment : Fragment() {
     private fun getUsersById(id: Int){
         val stringRequest: StringRequest = object : StringRequest(Method.GET, UsersApi.GET_BY_ID_URL + id, Response.Listener { response ->
             val gson = Gson()
-            val users: Array<Users> = gson.fromJson(response, Array<Users>::class.java)
+            val users = gson.fromJson(response, Users::class.java)
 
-            tvUsername.setText("Username:" +users[0].username)
-            tvEmail.setText("Email:" +users[0].email)
-            tvDate.setText("Birth:" +users[0].date)
-            tvPhone.setText("Phone number:" +users[0].noTelp)
+            tvUsername.setText("Username:" +users.username)
+            tvEmail.setText("Email:" +users.email)
+            tvDate.setText("Birth:" +users.date)
+            tvPhone.setText("Phone number:" +users.noTelp)
 
 
 

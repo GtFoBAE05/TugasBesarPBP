@@ -4,8 +4,6 @@ package com.example.tugasbesarpbp
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -32,7 +30,7 @@ class LoginPageTest {
     fun loginPageTest() {
         val materialButton = onView(
             allOf(
-                withId(R.id.btnLogin), withText("LOGIN"),
+                withId(R.id.btnClear), withText("Clear text"),
                 childAtPosition(
                     allOf(
                         withId(R.id.mainLayout),
@@ -41,29 +39,12 @@ class LoginPageTest {
                             0
                         )
                     ),
-                    5
+                    4
                 ),
                 isDisplayed()
             )
         )
         materialButton.perform(click())
-        onView(isRoot()).perform(waitFor(3000))
-
-        val textInputEditText = onView(
-            allOf(
-                withId(R.id.tietUsernameLogin),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.editTextUsernameLogin),
-                        0
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        textInputEditText.perform(replaceText("dini"), closeSoftKeyboard())
-        onView(isRoot()).perform(waitFor(3000))
 
         val materialButton2 = onView(
             allOf(
@@ -82,14 +63,13 @@ class LoginPageTest {
             )
         )
         materialButton2.perform(click())
-        onView(isRoot()).perform(waitFor(3000))
 
-        val textInputEditText2 = onView(
+        val textInputEditText = onView(
             allOf(
-                withId(R.id.tietPasswordLogin),
+                withId(R.id.tietUsernameLogin),
                 childAtPosition(
                     childAtPosition(
-                        withId(R.id.outlinedTextFieldPasswordLogin),
+                        withId(R.id.editTextUsernameLogin),
                         0
                     ),
                     0
@@ -97,8 +77,7 @@ class LoginPageTest {
                 isDisplayed()
             )
         )
-        textInputEditText2.perform(replaceText("123"), closeSoftKeyboard())
-        onView(isRoot()).perform(waitFor(3000))
+        textInputEditText.perform(replaceText("boni"), closeSoftKeyboard())
 
         val materialButton3 = onView(
             allOf(
@@ -117,7 +96,39 @@ class LoginPageTest {
             )
         )
         materialButton3.perform(click())
-        onView(isRoot()).perform(waitFor(3000))
+
+        val textInputEditText2 = onView(
+            allOf(
+                withId(R.id.tietPasswordLogin),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.outlinedTextFieldPasswordLogin),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        textInputEditText2.perform(replaceText("123"), closeSoftKeyboard())
+
+        val materialButton4 = onView(
+            allOf(
+                withId(R.id.btnLogin), withText("LOGIN"),
+                childAtPosition(
+                    allOf(
+                        withId(R.id.mainLayout),
+                        childAtPosition(
+                            withId(android.R.id.content),
+                            0
+                        )
+                    ),
+                    5
+                ),
+                isDisplayed()
+            )
+        )
+        materialButton4.perform(click())
     }
 
     private fun childAtPosition(
@@ -134,22 +145,6 @@ class LoginPageTest {
                 val parent = view.parent
                 return parent is ViewGroup && parentMatcher.matches(parent)
                         && view == parent.getChildAt(position)
-            }
-        }
-    }
-
-    fun waitFor(delay:Long): ViewAction {
-        return object : ViewAction {
-            override fun getConstraints(): Matcher<View> {
-                return isRoot()
-            }
-
-            override fun getDescription(): String {
-                return "wait for " + delay + " milliseconds"
-            }
-
-            override fun perform(uiController: UiController?, view: View?) {
-                uiController!!.loopMainThreadForAtLeast(delay)
             }
         }
     }
