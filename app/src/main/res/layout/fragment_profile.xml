@@ -106,12 +106,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="78dp"
             android:layout_marginBottom="86dp"
+            android:backgroundTint="@color/black"
             android:text="Update Profile"
             app:layout_constraintBottom_toTopOf="@+id/btnLogoutInProfilePage"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView"
-            android:backgroundTint="@color/black"/>
+            app:layout_constraintVertical_bias="0.51" />
 
         <Button
             android:id="@+id/btnLogoutInProfilePage"
@@ -119,6 +121,17 @@
             android:layout_height="wrap_content"
             android:text="LOGOUT"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnUpdateProfile"
+            android:backgroundTint="@color/common_google_signin_btn_text_light"/>
+
+        <Button
+            android:id="@+id/buttonMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="map"
+            app:layout_constraintBottom_toTopOf="@+id/btnLogoutInProfilePage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnUpdateProfile"

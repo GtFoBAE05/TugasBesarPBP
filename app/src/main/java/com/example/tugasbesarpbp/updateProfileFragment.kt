@@ -154,7 +154,7 @@ class updateProfileFragment : Fragment() {
             val users= gson.fromJson(response, Users::class.java)
 
             tietUsername.setText(users.username)
-            tietPassword.setText(users.password)
+            //tietPassword.setText(users.password)
             tietEmail.setText(users.email)
             tietDate.setText(users.date)
             tietNoTelp.setText(users.noTelp)

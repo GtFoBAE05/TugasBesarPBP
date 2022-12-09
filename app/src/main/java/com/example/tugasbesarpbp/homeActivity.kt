@@ -28,8 +28,9 @@ class homeActivity : AppCompatActivity() {
                 R.id.menu_profile->{
                     changeFragment(profileFragment())
                 }
-                R.id.menu_map->changeFragment(mapFragment())
+                //R.id.menu_map->changeFragment(mapFragment())
                 R.id.menu_bill->changeFragment(billFragment())
+                R.id.menu_reminder->changeFragment(reminderFragment())
             }
             true
         }

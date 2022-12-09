@@ -57,6 +57,7 @@ class profileFragment : Fragment() {
     lateinit var tvEmail:TextView
     lateinit var tvDate:TextView
     lateinit var tvPhone:TextView
+    lateinit var btnMap: Button
 
     lateinit var binding: FragmentProfileBinding
 
@@ -116,6 +117,11 @@ class profileFragment : Fragment() {
                     activity!!.finishAndRemoveTask()
                 }
             }).show()
+        }
+
+        btnMap= binding.buttonMap
+        btnMap.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, mapFragment()).commit()
         }
     }
 
