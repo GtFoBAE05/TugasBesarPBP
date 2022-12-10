@@ -50,7 +50,7 @@ class BillAdapter (private var data: List<Bill>, context: Context, private val l
 
         holder.tvName.text=  currentItem.name
         holder.tvDate.text= currentItem.date
-        holder.tvAmount.text= currentItem.amount.toString()
+        holder.tvAmount.text= "$" + currentItem.amount.toString()
 
         holder.cvBill.setOnClickListener {
 //            val i = Intent(context, billDetailFragment::class.java)

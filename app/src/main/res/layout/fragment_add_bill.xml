@@ -77,12 +77,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintVertical_bias="0.0">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
                     android:id="@+id/tietAddBillAmount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Amount"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    app:prefix="$"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
@@ -34,7 +35,7 @@ class billDetailFragment : Fragment() {
     private var queue: RequestQueue? = null
     lateinit var tietBillName:TextInputEditText
     lateinit var tietBillDate:TextInputEditText
-    lateinit var tietBillAmount:TextInputEditText
+    lateinit var tietBillAmount:EditText
 
     var picker: DatePickerDialog? = null
 

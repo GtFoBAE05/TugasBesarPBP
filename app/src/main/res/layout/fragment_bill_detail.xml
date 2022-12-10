@@ -65,12 +65,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
                     android:id="@+id/tietDetailBillAmount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Amount"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    app:prefix="$"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -34,6 +34,7 @@ import com.example.tugasbesarpbp.databinding.FragmentProfileBinding
 import com.example.tugasbesarpbp.models.Bill
 import com.example.tugasbesarpbp.models.Users
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -122,6 +123,11 @@ class profileFragment : Fragment() {
         btnMap= binding.buttonMap
         btnMap.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, mapFragment()).commit()
+        }
+
+        val userPic = view.userProfilePic
+        userPic.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, cameraFragment()).commit()
         }
     }
 
